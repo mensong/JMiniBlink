@@ -68,8 +68,8 @@
     ITERATOR1(const char*, wkeGetUserAgent, wkeWebView webView, "") \
     ITERATOR2(void, wkeSetUserAgentW, wkeWebView webView, const wchar_t* userAgent, "") \
     \
-    ITERATOR4(void, wkeShowDevtoolsW, wkeWebView webView, const wchar_t* inspectorPath, wkeOnShowDevtoolsCallback callback, void* param, "") \
-    ITERATOR4(void, wkeShowDevtools, wkeWebView webView, const utf8* inspectorPath, wkeOnShowDevtoolsCallback callback, void* param, "") \
+    ITERATOR4(void, wkeShowDevtoolsW, wkeWebView webView, const wchar_t* inspectorFilePath, wkeOnShowDevtoolsCallback callback, void* param, "") \
+    ITERATOR4(void, wkeShowDevtools, wkeWebView webView, const utf8* inspectorFilePath, wkeOnShowDevtoolsCallback callback, void* param, "") \
     \
     ITERATOR2(void, wkeLoadUrl, wkeWebView webView, const utf8* url, "") \
     ITERATOR2(void, wkeLoadUrlW, wkeWebView webView, const wchar_t* url, "") \
@@ -80,7 +80,7 @@
     \
     ITERATOR2(void, wkeLoadHtml, wkeWebView webView, const utf8* html, "") \
     ITERATOR3(void, wkeLoadHtmlWithBaseUrl, wkeWebView webView, const utf8* html, const utf8* baseUrl, "") \
-    ITERATOR2(void, wkeLoadHtmlW, wkeWebView webView, const wchar_t* html, "") \
+    ITERATOR2(void, wkeLoadHTMLW, wkeWebView webView, const wchar_t* html, "") \
     \
     ITERATOR2(void, wkeLoadFile, wkeWebView webView, const utf8* filename, "") \
     ITERATOR2(void, wkeLoadFileW, wkeWebView webView, const wchar_t* filename, "") \
@@ -204,7 +204,7 @@
     ITERATOR5(void, wkeSetDeviceParameter, wkeWebView webView, const char* device, const char* paramStr, int paramInt, float paramFloat, "") \
     ITERATOR1(wkeTempCallbackInfo*, wkeGetTempCallbackInfo, wkeWebView webView, "") \
     \
-    ITERATOR3(void, wkeOnMouseOverUrlChanged, wkeWebView webView, wkeTitleChangedCallback callback, void* callbackParam, "") \
+    ITERATOR3(void, wkeOnMouseOverUrlChanged, wkeWebView webView, wkeMouseOverUrlChangedCallback callback, void* callbackParam, "") \
     ITERATOR3(void, wkeOnTitleChanged, wkeWebView webView, wkeTitleChangedCallback callback, void* callbackParam, "") \
     ITERATOR3(void, wkeOnUrlChanged, wkeWebView webView, wkeUrlChangedCallback callback, void* callbackParam, "") \
     ITERATOR3(void, wkeOnUrlChanged2, wkeWebView webView, wkeUrlChangedCallback2 callback, void* callbackParam, "") \
@@ -297,7 +297,7 @@
     ITERATOR4(void, wkeDragTargetEnd, wkeWebView webView, const POINT* clientPoint, const POINT* screenPoint, wkeWebDragOperation operation, "") \
     \
     ITERATOR1(void, wkeUtilSetUiCallback, wkeUiThreadPostTaskCallback callback, "") \
-    ITERATOR1(const utf8*, wkeUtilSerializeToMHtml, wkeWebView webView, "") \
+    ITERATOR1(const utf8*, wkeUtilSerializeToMHTML, wkeWebView webView, "") \
     \
     ITERATOR2(void, wkeSetWindowTitle, wkeWebView webWindow, const utf8* title, "") \
     ITERATOR2(void, wkeSetWindowTitleW, wkeWebView webWindow, const wchar_t* title, "") \

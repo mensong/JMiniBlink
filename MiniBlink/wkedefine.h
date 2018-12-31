@@ -157,11 +157,11 @@ typedef bool(WKE_CALL_TYPE *WKE_EXISTS_FILE)(const char * path);
 
 struct _wkeClientHandler; // declare warning fix
 typedef void(WKE_CALL_TYPE *ON_TITLE_CHANGED) (const struct _wkeClientHandler* clientHandler, const wkeString title);
-typedef void(WKE_CALL_TYPE *ON_Url_CHANGED) (const struct _wkeClientHandler* clientHandler, const wkeString url);
+typedef void(WKE_CALL_TYPE *ON_URL_CHANGED) (const struct _wkeClientHandler* clientHandler, const wkeString url);
 
 typedef struct _wkeClientHandler {
 	ON_TITLE_CHANGED onTitleChanged;
-	ON_Url_CHANGED onUrlChanged;
+	ON_URL_CHANGED onURLChanged;
 } wkeClientHandler;
 
 typedef bool(WKE_CALL_TYPE * wkeCookieVisitor)(
@@ -169,7 +169,7 @@ typedef bool(WKE_CALL_TYPE * wkeCookieVisitor)(
 	const char* name,
 	const char* value,
 	const char* domain,
-	const char* path, // If |path| is non-empty only Urls at or below the path will get the cookie value.
+	const char* path, // If |path| is non-empty only URLs at or below the path will get the cookie value.
 	int secure, // If |secure| is true the cookie will only be sent for HTTPS requests.
 	int httpOnly, // If |httponly| is true the cookie will only be sent for HTTP requests.
 	int* expires // The cookie expiration date is only valid if |has_expires| is true.
@@ -270,7 +270,7 @@ typedef struct {
 			// An image being dragged out of the renderer. Contains a buffer holding the image data
 			// as well as the suggested name for saving the image to.
 			StorageTypeBinaryData,
-			// Stores the filesystem Url of one file being dragged into the renderer.
+			// Stores the filesystem URL of one file being dragged into the renderer.
 			StorageTypeFileSystemFile,
 		} storageType;
 
@@ -290,11 +290,11 @@ typedef struct {
 		wkeMemBuf* title;
 
 		// Only valid when storageType == StorageTypeFileSystemFile.
-		wkeMemBuf* fileSystemUrl;
+		wkeMemBuf* fileSystemURL;
 		__int64 fileSystemFileSize;
 
 		// Only valid when stringType == "text/html".
-		wkeMemBuf* baseUrl;
+		wkeMemBuf* baseURL;
 	};
 
 	struct Item* m_itemList;
@@ -383,6 +383,7 @@ typedef enum _wkeRequestType {
 	kWkeRequestTypePut,
 } wkeRequestType;
 
+typedef void(WKE_CALL_TYPE*wkeMouseOverUrlChangedCallback)(wkeWebView webView, void* param, const wkeString url);
 typedef void(WKE_CALL_TYPE*wkeTitleChangedCallback)(wkeWebView webView, void* param, const wkeString title);
 typedef void(WKE_CALL_TYPE*wkeUrlChangedCallback)(wkeWebView webView, void* param, const wkeString url);
 typedef void(WKE_CALL_TYPE*wkeUrlChangedCallback2)(wkeWebView webView, void* param, wkeWebFrameHandle frameId, const wkeString url);
@@ -573,11 +574,11 @@ namespace wke {
 		virtual bool isTransparent() const = 0;
 		virtual void setTransparent(bool transparent) = 0;
 
-		virtual void loadUrl(const utf8* url) = 0;
-		virtual void loadUrl(const wchar_t* url) = 0;
+		virtual void loadURL(const utf8* url) = 0;
+		virtual void loadURL(const wchar_t* url) = 0;
 
-		virtual void loadHtml(const utf8* html) = 0;
-		virtual void loadHtml(const wchar_t* html) = 0;
+		virtual void loadHTML(const utf8* html) = 0;
+		virtual void loadHTML(const wchar_t* html) = 0;
 
 		virtual void loadFile(const utf8* filename) = 0;
 		virtual void loadFile(const wchar_t* filename) = 0;

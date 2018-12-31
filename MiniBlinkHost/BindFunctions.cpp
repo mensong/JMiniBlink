@@ -2,6 +2,7 @@
 #include "BindFunctions.h"
 #include "MiniBlinkHostApp.h"
 #include <map>
+#include <algorithm>
 
 typedef struct
 {
@@ -521,7 +522,31 @@ jsValue WKE_CALL_TYPE js_wkeShowDevtools(jsExecState es, void* param)
 		if (!jsIsString(jv0))
 			return jsBoolean(false);
 		const utf8* path = jsToString(es, jv0);
-		wkeShowDevtools(app->window, path, NULL, NULL);
+		std::string sPath;
+		std::string sPathUpper = path;
+		std::transform(sPathUpper.begin(), sPathUpper.end(), sPathUpper.begin(), ::toupper);
+		if (sPathUpper.substr(0, strlen("FILE://")) != "FILE://" &&
+			sPathUpper.substr(0, strlen("HTTP")) != "HTTP")
+		{//处理相对路径的问题
+			if (sPathUpper.size() >= 4 && sPathUpper[1] != ':')
+			{//相对路径
+				char dir[MAX_PATH] = { 0 };
+				GetCurrentDirectoryA(MAX_PATH, dir);
+				sPath = dir;
+				sPath += "\\";
+				sPath += path;
+			}
+			else
+			{
+				sPath = path;
+			}
+		}
+		else
+		{
+			sPath = path;
+		}
+
+		wkeShowDevtools(app->window, sPath.c_str(), NULL, NULL);
 		return jsBoolean(true);
 	}
 	return jsBoolean(false);
