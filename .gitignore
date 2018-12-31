@@ -6,3 +6,8 @@
 /test/LocalStorage/*.localstorage
 /MiniBlinkHost/Release
 /Release
+/MiniBlink/x64
+/MiniBlinkHost/x64/Debug
+/MiniBlinkHost/x64/Release
+/x64/Debug
+/x64/Release
