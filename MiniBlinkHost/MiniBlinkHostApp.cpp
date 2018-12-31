@@ -16,13 +16,13 @@
 void PrintHelp()
 {
 	const wchar_t* msg =
-		L"主命令行参数：\r\n"
+		L"命令行参数：\r\n"
 		L"  无/url  : 主页url(必需)\r\n"
 		L"  hide : 是否隐藏窗口，默认不隐藏窗口\r\n"
 		L"  tran : 是否为透明窗口，默认不透明\r\n"
 		L"  width : 窗口初始宽度\r\n"
-		L"  height : 窗口初始高度"
-		L"  preload : 预加载js文件（默认为同程序目录下的preload.js）";
+		L"  height : 窗口初始高度\n"
+		L"  preload : 预加载js文件（默认为同程序目录下的preload.js）\n";
 	MessageBoxW(NULL, msg, L"help", MB_OK);
 }
 

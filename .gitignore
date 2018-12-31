@@ -4,3 +4,5 @@
 /ipch
 /JMiniBlink.VC.db
 /test/LocalStorage/*.localstorage
+/MiniBlinkHost/Release
+/Release
