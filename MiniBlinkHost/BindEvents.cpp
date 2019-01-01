@@ -642,17 +642,6 @@ jsValue WKE_CALL_TYPE js_wkeOnWindowClosing(jsExecState es, void* param)
 }
 bool HandleWindowClosing(wkeWebView webView, void* param)
 {
-#ifdef _DEBUG
-	//#if ((defined MY_DEBUG) && (MY_DEBUG == 1))
-	if (IDYES == MessageBoxW(NULL, L"是否打开调试器？", L"mb", MB_YESNO | MB_ICONQUESTION))
-	{
-		Application* app = (Application*)param;
-		wkeShowDevtools(app->window, "./WebInspector/inspector.html", NULL, NULL);
-		return false;
-	}
-	//#endif
-#endif
-
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnWindowClosing");
