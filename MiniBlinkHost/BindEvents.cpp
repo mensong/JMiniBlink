@@ -252,7 +252,7 @@ void HandleAlertBox(wkeWebView webView, void* param, const wkeString msg)
 	const utf8* pMsg = wkeGetString(msg);
 	MByteToWChar(pMsg, strlen(pMsg), &wv, CP_UTF8);
 	wv.push_back('\0');
-	::MessageBoxW(nullptr, wv.data(), L"Miniblink Alert", MB_OK);
+	::MessageBoxW(nullptr, wv.data(), L"JMiniblink", MB_OK);
 }
 
 jsValue WKE_CALL_TYPE js_wkeOnConfirmBox(jsExecState es, void* param)
@@ -292,7 +292,7 @@ bool HandleConfirmBox(wkeWebView webView, void* param, const wkeString msg)
 	const utf8* pMsg = wkeGetString(msg);
 	MByteToWChar(pMsg, strlen(pMsg), &wv, CP_UTF8);
 	wv.push_back('\0');
-	int result = ::MessageBoxW(NULL, wv.data(), L"Miniblink Confirm", MB_OKCANCEL);
+	int result = ::MessageBoxW(NULL, wv.data(), L"JMiniblink", MB_OKCANCEL);
 	return result == IDOK;
 }
 
@@ -344,7 +344,7 @@ bool HandlePromptBox(wkeWebView webView, void* param, const wkeString msg, const
 	int x = (parentWidth - width) / 2;
 	int y = (parentHeight - height) / 2;
 	_InitInputBoxW(NULL);
-	wchar_t* pRes =  _InputBoxW(wv.data(), L"MiniBlink PromptBox", L"", x, y);	
+	wchar_t* pRes =  _InputBoxW(wv.data(), L"JMiniBlink", L"", x, y);	
 	wkeSetStringW(result, pRes, wcslen(pRes));
 
 	return true;
@@ -719,42 +719,42 @@ void HandleWillMediaLoad(wkeWebView webView, void* param, const char* url, wkeMe
 	}
 }
 
-jsValue WKE_CALL_TYPE js_wkeOnResponse(jsExecState es, void* param)
-{
-	int nArgc = jsArgCount(es);
-	if (nArgc < 1)
-		return jsBoolean(false);
-
-	jsValue jFunc = jsArg(es, 0);
-	if (!jsIsFunction(jFunc))
-		return jsBoolean(false);
-
-	jsSetGlobal(es, "_wkeOnResponse", jFunc);
-
-	return jsBoolean(true);
-}
-bool HandleResponse(wkeWebView webView, void* param, const char* url, wkeNetJob job)
-{
-	jsExecState es = wkeGlobalExec(webView);
-
-	jsValue jFunc = jsGetGlobal(es, "_wkeOnResponse");
-	if (jsIsFunction(jFunc))
-	{
-		jsValue* argvs = new jsValue[2];
-		argvs[0] = jsString(es, url);
-		argvs[1] = jsInt((int)job);
-
-		bool bCancel = false;
-		jsValue jRet = jsCallGlobal(es, jFunc, argvs, 2);
-		if (jsIsBoolean(jRet))
-			bCancel = jsToBoolean(es, jRet);
-
-		delete[] argvs;
-		return bCancel;
-	}
-
-	return false;
-}
+//jsValue WKE_CALL_TYPE js_wkeOnResponse(jsExecState es, void* param)
+//{
+//	int nArgc = jsArgCount(es);
+//	if (nArgc < 1)
+//		return jsBoolean(false);
+//
+//	jsValue jFunc = jsArg(es, 0);
+//	if (!jsIsFunction(jFunc))
+//		return jsBoolean(false);
+//
+//	jsSetGlobal(es, "_wkeOnResponse", jFunc);
+//
+//	return jsBoolean(true);
+//}
+//bool HandleResponse(wkeWebView webView, void* param, const char* url, wkeNetJob job)
+//{
+//	jsExecState es = wkeGlobalExec(webView);
+//
+//	jsValue jFunc = jsGetGlobal(es, "_wkeOnResponse");
+//	if (jsIsFunction(jFunc))
+//	{
+//		jsValue* argvs = new jsValue[2];
+//		argvs[0] = jsString(es, url);
+//		argvs[1] = jsInt((int)job);
+//
+//		bool bCancel = false;
+//		jsValue jRet = jsCallGlobal(es, jFunc, argvs, 2);
+//		if (jsIsBoolean(jRet))
+//			bCancel = jsToBoolean(es, jRet);
+//
+//		delete[] argvs;
+//		return bCancel;
+//	}
+//
+//	return false;
+//}
 
 jsValue WKE_CALL_TYPE js_wkeNetHookRequest(jsExecState es, void* param)
 {
@@ -1212,8 +1212,8 @@ void InitEvents(Application* app)
 	/*
 	* wkeOnResponse(function(url:string, job:int){...});
 	*/
-	wkeJsBindFunction("wkeOnResponse", js_wkeOnResponse, app, 1);
-	wkeOnResponse(app->window, HandleResponse, app);
+	//wkeJsBindFunction("wkeOnResponse", js_wkeOnResponse, app, 1);
+	//wkeOnResponse(app->window, HandleResponse, app);
 
 	/*
 	* wkeOnLoadUrlBegin(function(url:string, job:int){...});

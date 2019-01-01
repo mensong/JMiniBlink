@@ -25,6 +25,7 @@ jsValue getJsValueByString(Application* app, jsExecState es, const std::string& 
 		return jsBoolean(stringValue == "true");
 	case JSTYPE_OBJECT:
 	case JSTYPE_ARRAY:
+	case JSTYPE_FUNCTION:
 		return wkeRunJS(app->window, ("return " + stringValue).c_str(), true);
 	case JSTYPE_NULL:
 		return jsNull();
@@ -54,6 +55,11 @@ std::string makeJsValue(Application* app, jsExecState es, jsValue jv)
 		jsSetGlobal(es, "__JSTYPE_TEMP", jv);
 		sStringValue += jsToString(es,
 			wkeRunJS(app->window, "JSON.stringify(__JSTYPE_TEMP)", false));
+		break;
+	case JSTYPE_FUNCTION:
+		jsValue jFunc = jsGet(es, jv, "toString");
+		jsValue jFuncStr = jsCall(es, jFunc, jv, NULL, 0);
+		sStringValue += jsToString(es, jFuncStr);
 		break;
 	}
 

@@ -115,7 +115,7 @@ int WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 							      _lpDefValue,
 							      _nEditStyle,
 							      5,
-							      80,
+							      70,
 							      350,
 							      20,
 							      hWnd,
