@@ -22,10 +22,10 @@ wkeOnWindowClosing(function(){
 	return false;
 });
 
-wkeOnCreateView(function(navType, url, features){
+/*wkeOnCreateView(function(navType, url, features){
 	alert('new window.');
 	return null;
-});
+});*/
 
 wkeOnDocumentReady(function(frameId){
 	alert('document ready: ' + window.location.href);

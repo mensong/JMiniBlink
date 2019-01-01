@@ -73,6 +73,21 @@ BOOL ProcessCommandLine(Application* app)
 	if (!am.Has(app->preloadFile, L"preload"))
 		app->preloadFile = L"preload.js";
 
+	//sim name
+	if (am.Has(sTemp, L"simName"))
+	{
+		if (!sTemp.empty())
+		{
+			std::vector<char> vctSZ;
+			WCharToMByte(sTemp.c_str(), sTemp.size(), &vctSZ, CP_ACP);
+			vctSZ.push_back('\0');
+			app->simName = vctSZ.data();
+		}
+	}
+	if (app->simName.empty())
+		app->simName =  "sim" + std::to_string(::GetTickCount64());
+	app->db = new simdb(app->simName.c_str(), 1024, 4096);
+
     return TRUE;
 }
 

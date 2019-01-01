@@ -4,90 +4,91 @@
 #include <map>
 #include <algorithm>
 
-typedef struct
+jsValue getJsValueByString(Application* app, jsExecState es, const std::string& jsValueString)
 {
-	jsType type;
+	size_t pos = jsValueString.find('|');
+	if (pos == std::string::npos || pos == 0)
+		return jsUndefined();
 
-	double num;//number
-	std::string str;//string¡¢object¡¢array
-	bool b;
-} JS_DATA;
-std::map<std::string, JS_DATA> g_globalData;
-jsValue JsDataToJsValue(Application* app, jsExecState es, const JS_DATA& jd)
-{
-	switch (jd.type)
+	jsType type = (jsType)atoi(jsValueString.substr(0, pos).c_str());
+	std::string stringValue = jsValueString.substr(pos + 1);
+	switch (type)
 	{
-	case JSTYPE_NUMBER:
-		if ((int)jd.num == jd.num)//int
-			return jsInt((int)jd.num);
+	case JSTYPE_NUMBER:		
+		if (stringValue.find('.') == std::string::npos)//int
+			return jsInt(atoi(stringValue.c_str()));
 		else
-			return jsDouble(jd.num);
+			return jsDouble(atof(stringValue.c_str()));
 	case JSTYPE_STRING:
-		return jsString(es, jd.str.c_str());
+		return jsString(es, stringValue.c_str());
 	case JSTYPE_BOOLEAN:
-		return jsBoolean(jd.b);
+		return jsBoolean(stringValue == "true");
 	case JSTYPE_OBJECT:
 	case JSTYPE_ARRAY:
-		return wkeRunJS(app->window, ("return " + jd.str).c_str(), true);
-	case JSTYPE_UNDEFINED:
-		return jsUndefined();
+		return wkeRunJS(app->window, ("return " + stringValue).c_str(), true);
 	case JSTYPE_NULL:
 		return jsNull();
 	}
 
 	return jsUndefined();
 }
-bool JsValueToJsData(JS_DATA& jd, Application* app, jsExecState es, jsValue jv)
+
+std::string makeJsValue(Application* app, jsExecState es, jsValue jv)
 {
+	/*
+	  "jsType|string data"
+	*/
 	jsType t = jsTypeOf(jv);
-	jd.type = t;
+	std::string sStringValue = std::to_string((int)t) + "|";
 	switch (t)
 	{
 	case JSTYPE_NUMBER:
-		jd.num = jsToDouble(es, jv);
-		return true;
 	case JSTYPE_STRING:
-		jd.str = jsToString(es, jv);
-		return true;
 	case JSTYPE_BOOLEAN:
-		jd.b = jsToBoolean(es, jv);
-		return true;
+	case JSTYPE_UNDEFINED:
+	case JSTYPE_NULL:
+		sStringValue += jsToString(es, jv);
+		break;
 	case JSTYPE_ARRAY:
 	case JSTYPE_OBJECT:
 		jsSetGlobal(es, "__JSTYPE_TEMP", jv);
-		jd.str = jsToString(es, 
+		sStringValue += jsToString(es,
 			wkeRunJS(app->window, "JSON.stringify(__JSTYPE_TEMP)", false));
-		return true;
-	case JSTYPE_UNDEFINED:
-	case JSTYPE_NULL:
-		return true;
+		break;
 	}
 
-	return false;
+	return sStringValue;
 }
 
 jsValue WKE_CALL_TYPE js_GlobalData(jsExecState es, void* param)
 {
 	Application* app = (Application*)param;
 
+	//const utf8* da = jsToString(es, jsArg(es, 0));
+
 	int nArgc = jsArgCount(es);
 	if (nArgc == 1)
 	{//È¡
 		const utf8* key = jsToString(es, jsArg(es, 0));
-		std::map<std::string, JS_DATA>::const_iterator itFinder = g_globalData.find(key);
-		if (g_globalData.cend() != itFinder)
-			return JsDataToJsValue(app, es, itFinder->second);
+		std::string sJsValueString = app->db->get(key);
+		return getJsValueByString(app, es, sJsValueString);
 	}
 	else if (nArgc == 2)
 	{//Ð´
 		const utf8* key = jsToString(es, jsArg(es, 0));
 		jsValue jv = jsArg(es, 1);
-		JS_DATA jd;
-		if (JsValueToJsData(jd, app, es, jv))
-		{
-			g_globalData[key] = jd;
-			return jv;
+		
+		if (jsIsUndefined(jv))
+		{//É¾³ý
+			std::string sJsValueString = app->db->get(key);
+			jv = getJsValueByString(app, es, sJsValueString);
+			app->db->del(key);
 		}
+		else
+		{
+			app->db->put(key, makeJsValue(app, es, jv));
+		}
+		return jv;
 	}
 
 	return jsUndefined();
@@ -1380,6 +1381,8 @@ jsValue WKE_CALL_TYPE js_wkeCreateWebWindow(jsExecState es, void* param)
 			sCmd += " -preload ";
 			sCmd += jsToString(es, j);
 		}
+		sCmd += " -simName ";
+		sCmd += app->simName;
 
 		WinExec(sCmd.c_str(), SW_SHOW);
 
@@ -1565,6 +1568,7 @@ void InitFunctions(Application* app)
 	/*
 	* GlobalData(key:string) : jsvalue;//È¡
 	* GlobalData(key:string, value:jsvalue) : jsvalue;//´æ
+	* GlobalData(key:string, undefined) : jsvalue;//É¾
 	*/
 	wkeJsBindFunction("GlobalData", js_GlobalData, app, -1);
 

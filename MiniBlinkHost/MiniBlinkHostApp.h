@@ -4,6 +4,7 @@
 #include <wke.h>
 #include <atltime.h>
 #include <string>
+#include <simdb.hpp>
 
 class Application
 {
@@ -22,6 +23,7 @@ public:
 
 	~Application()
 	{
+		delete db;
 		wkeFinalize();
 	}
 
@@ -33,6 +35,9 @@ public:
 	int width;
 	int height;
 	std::wstring preloadFile;
+
+	std::string simName;
+	simdb* db;
 };
 
 

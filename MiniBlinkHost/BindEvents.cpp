@@ -120,6 +120,8 @@ wkeWebView HandleCreateView(wkeWebView webView, void* param, wkeNavigationType n
 		vctSZ.push_back('\0');
 		sCmd += vctSZ.data();
 	}
+	sCmd += " -simName ";
+	sCmd += app->simName;
 
 	WinExec(sCmd.c_str(), SW_SHOW);
 
