@@ -3,6 +3,8 @@
 #include "MiniBlinkHostApp.h"
 #include "wkeInputBoxW.h"
 
+bool g_defaultHtml = true;
+
 // 回调：文档加载成功
 jsValue WKE_CALL_TYPE js_wkeOnDocumentReady(jsExecState es, void* param)
 {
@@ -18,7 +20,7 @@ jsValue WKE_CALL_TYPE js_wkeOnDocumentReady(jsExecState es, void* param)
 
 	return jsBoolean(true);
 }
-bool g_defaultHtml = true;
+
 void HandleDocumentReady2(wkeWebView webView, void* param, wkeWebFrameHandle frameId)
 {
 	Application* app = (Application*)param;
@@ -452,7 +454,7 @@ bool HandleDownload(wkeWebView webView, void* param, const char* url)
 		return bRet;
 	}
 
-	return true;
+	return false;
 }
 
 jsValue WKE_CALL_TYPE js_wkeOnConsole(jsExecState es, void* param)
@@ -1102,6 +1104,7 @@ jsValue WKE_CALL_TYPE js_wkeNetAddHTTPHeaderFieldToUrlRequest(jsExecState es, vo
 
 void InitEvents(Application* app)
 {
+
 	/*
 	* wkeOnDocumentReady(function(frameId:int){...});
 	*/

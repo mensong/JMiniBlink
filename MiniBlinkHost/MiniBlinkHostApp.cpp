@@ -1,5 +1,4 @@
-﻿
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "MiniBlinkHostApp.h"
 #include <stdio.h>
 #include <stdlib.h>
