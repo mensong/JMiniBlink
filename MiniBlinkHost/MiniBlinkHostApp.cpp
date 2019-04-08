@@ -16,12 +16,12 @@ void PrintHelp()
 {
 	const wchar_t* msg =
 		L"命令行参数：\r\n"
-		L"  无/url  : 主页url(必需)\r\n"
-		L"  hide : 是否隐藏窗口，默认不隐藏窗口\r\n"
-		L"  tran : 是否为透明窗口，默认不透明\r\n"
-		L"  width : 窗口初始宽度\r\n"
-		L"  height : 窗口初始高度\n"
-		L"  preload : 预加载js文件（默认为同程序目录下的preload.js）\n";
+		L"  无或-url <url> : 主页url\r\n"
+		L"  -hide <0|1> : 是否隐藏窗口，默认不隐藏窗口\r\n"
+		L"  -tran <0|1> : 是否为透明窗口，默认不透明\r\n"
+		L"  -width <num> : 窗口初始宽度\r\n"
+		L"  -height <num> : 窗口初始高度\n"
+		L"  -preload <preload.js> : 预加载js文件（默认为同程序目录下的preload.js）\n";
 	MessageBoxW(NULL, msg, L"help", MB_OK);
 }
 
@@ -34,11 +34,12 @@ BOOL ProcessCommandLine(Application* app)
 	am.SetMultiValue(true);
 	am.AddCmdFlag(L"-");
 	am.AddCmdFlag(L"/");
+	am.AddCmdFlag(L"--");
 	am.Parse(argc, argv);
 		
 	//Start Url
-	if (!am.Has(app->url, L"url") && !am.Has(app->url, L""))
-		return FALSE;
+	if (!am.Has(app->url, L"url"))
+		app->url = am.GetArg(L"");
 
 	std::wstring sTemp;
 		

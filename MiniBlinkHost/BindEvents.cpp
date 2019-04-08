@@ -48,7 +48,8 @@ void HandleDocumentReady2(wkeWebView webView, void* param, wkeWebFrameHandle fra
 	if (g_defaultHtml)
 	{// ¼ÓÔØÖ÷Ò³
 		g_defaultHtml = false;
-		wkeLoadUrlW(app->window, app->url.c_str());
+		if (!app->url.empty())
+			wkeLoadUrlW(app->window, app->url.c_str());
 	}
 }
 

@@ -2,18 +2,20 @@
 //开启多窗口模式
 wkeSetNavigationToNewWindowEnable(true);
 
+//打开开发者工具
+wkeShowDevtools('WebInspector/inspector.html');
+
+//替换hao123为自定义网页内容
 wkeOnLoadUrlBegin(function(url, job){
-	console.log(url);
+	console.log("wkeOnLoadUrlBegin:" + url);
 	if (url == 'https://www.hao123.com/')
 		wkeNetHookRequest(job);
-	
+		
 	return false;
 });
-
 wkeOnNetHookRequest(function(url, job, buf, len){
-	//alert('hooked ' + url);
-	alert(wkeNetGetMIMEType(job));
-	wkeNetSetData(job, '<html><body><a href="https://www.baidu.com">Gergul</a></body></html>');
+	console.log('wkeOnNetHookRequest:' + url);
+	wkeNetSetData(job, '<html><body><a href="https://www.baidu.com">Hello.I am coming from Hao123. But I am not Hao123</a></body></html>');
 });
 
 wkeOnWindowClosing(function(){
@@ -28,5 +30,11 @@ wkeOnWindowClosing(function(){
 });*/
 
 wkeOnDocumentReady(function(frameId){
-	alert('document ready: ' + window.location.href);
+	console.log('wkeOnDocumentReady:' + window.location.href);
 });
+
+//打开主页
+if (GlobalData("has open home page") == undefined) {//条件是防止死循环打开主页
+	wkeLoadUrl("https://www.hao123.com");
+	GlobalData("has open home page", true);
+}

@@ -19,11 +19,14 @@ public:
 		transparent = false;
 		width = 1024;
 		height = 768;
+
+		db = NULL;
 	}
 
 	~Application()
 	{
-		delete db;
+		if (db)
+			delete db;
 		wkeFinalize();
 	}
 
