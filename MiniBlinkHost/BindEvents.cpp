@@ -95,7 +95,7 @@ wkeWebView HandleCreateView(wkeWebView webView, void* param, wkeNavigationType n
 		jsValue jRet = jsCallGlobal(es, jFunc, argvs, 3);
 		delete[] argvs;
 		if (jsIsNumber(jRet))
-			return (wkeWebView)jsToInt(es, jRet);
+			return (wkeWebView)(UINT64)jsToDouble(es, jRet);
 		return nullptr;
 	}
 
