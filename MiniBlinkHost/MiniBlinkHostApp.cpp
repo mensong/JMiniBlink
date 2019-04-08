@@ -85,7 +85,7 @@ BOOL ProcessCommandLine(Application* app)
 		}
 	}
 	if (app->simName.empty())
-		app->simName =  "sim" + std::to_string(::GetTickCount64());
+		app->simName =  "sim" + std::to_string(::GetTickCount());
 	app->db = new simdb(app->simName.c_str(), 1024, 4096);
 
     return TRUE;
