@@ -518,7 +518,7 @@ bool HandleLoadUrlBegin(wkeWebView webView, void* param, const char *url, void *
 	{
 		jsValue* argvs = new jsValue[2];
 		argvs[0] = jsString(es, url);
-		argvs[1] = jsInt((int)job);
+		argvs[1] = jsDouble((double)(UINT64)job);
 
 		jsValue jRet = jsCallGlobal(es, jFunc, argvs, 2);
 		if (jsIsBoolean(jRet))
@@ -553,7 +553,7 @@ void HandleNetHookRequest(wkeWebView webView, void* param, const char* url, wkeN
 	{
 		jsValue* argvs = new jsValue[4];
 		argvs[0] = jsString(es, url);
-		argvs[1] = jsInt((int)job);
+		argvs[1] = jsDouble((double)(UINT64)job);
 		argvs[2] = jsString(es, (const utf8*)buf);
 		argvs[3] = jsInt(len);
 
@@ -745,7 +745,7 @@ bool HandleResponse(wkeWebView webView, void* param, const char* url, wkeNetJob 
 	{
 		jsValue* argvs = new jsValue[2];
 		argvs[0] = jsString(es, url);
-		argvs[1] = jsInt((int)job);
+		argvs[1] = jsDouble((double)(UINT64)job);
 
 		bool bCancel = false;
 		jsValue jRet = jsCallGlobal(es, jFunc, argvs, 2);
@@ -771,7 +771,7 @@ jsValue WKE_CALL_TYPE js_wkeNetHookRequest(jsExecState es, void* param)
 	if (!jsIsNumber(jv))
 		return jsBoolean(false);
 
-	wkeNetHookRequest((wkeNetJob)jsToInt(es, jv));
+	wkeNetHookRequest((wkeNetJob)(UINT64)jsToDouble(es, jv));
 
 	return jsBoolean(true);
 }
@@ -790,7 +790,7 @@ jsValue WKE_CALL_TYPE js_wkeNetSetData(jsExecState es, void* param)
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
 			return jsBoolean(false);
-		job = (wkeNetJob)jsToInt(es, jv0);
+		job = (wkeNetJob)(UINT64)jsToDouble(es, jv0);
 		jsValue jv1 = jsArg(es, 1);
 		newData = const_cast<utf8*>(jsToString(es, jv1));
 		nDataLen = strlen(newData);
@@ -800,7 +800,7 @@ jsValue WKE_CALL_TYPE js_wkeNetSetData(jsExecState es, void* param)
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
 			return jsBoolean(false);
-		job = (wkeNetJob)jsToInt(es, jv0);
+		job = (wkeNetJob)(UINT64)jsToDouble(es, jv0);
 		jsValue jv1 = jsArg(es, 1);
 		newData = const_cast<utf8*>(jsToString(es, jv1));
 		jsValue jv2 = jsArg(es, 2);
@@ -827,7 +827,7 @@ jsValue WKE_CALL_TYPE js_wkeNetSetMIMEType(jsExecState es, void* param)
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
 			return jsBoolean(false);
-		wkeNetJob job = (wkeNetJob)jsToInt(es, jv0);
+		wkeNetJob job = (wkeNetJob)(UINT64)jsToDouble(es, jv0);
 		jsValue jv1 = jsArg(es, 1);
 		const char* szMimeType = jsToString(es, jv1);
 		wkeNetSetMIMEType(job, szMimeType);
@@ -847,7 +847,7 @@ jsValue WKE_CALL_TYPE js_wkeNetGetMIMEType(jsExecState es, void* param)
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
 			return jsBoolean(false);
-		wkeNetJob job = (wkeNetJob)jsToInt(es, jv0);
+		wkeNetJob job = (wkeNetJob)(UINT64)jsToDouble(es, jv0);
 		const char* pMimeType = wkeNetGetMIMEType(job, nullptr);
 		return jsString(es, pMimeType);
 	}
@@ -865,7 +865,7 @@ jsValue WKE_CALL_TYPE js_wkeNetSetHTTPHeaderField(jsExecState es, void* param)
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
 			return jsBoolean(false);
-		wkeNetJob job = (wkeNetJob)jsToInt(es, jv0);
+		wkeNetJob job = (wkeNetJob)(UINT64)jsToDouble(es, jv0);
 		jsValue jv2 = jsArg(es, 2);
 		if (!jsIsBoolean(jv2))
 			return jsBoolean(false);
@@ -890,7 +890,7 @@ jsValue WKE_CALL_TYPE js_wkeNetSetHTTPHeaderField(jsExecState es, void* param)
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
 			return jsBoolean(false);
-		wkeNetJob job = (wkeNetJob)jsToInt(es, jv0);
+		wkeNetJob job = (wkeNetJob)(UINT64)jsToDouble(es, jv0);
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsString(jv1))
 			return jsBoolean(false);
@@ -922,7 +922,7 @@ jsValue WKE_CALL_TYPE js_wkeNetGetHTTPHeaderField(jsExecState es, void* param)
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
 			return jsBoolean(false);
-		wkeNetJob job = (wkeNetJob)jsToInt(es, jv0);
+		wkeNetJob job = (wkeNetJob)(UINT64)jsToDouble(es, jv0);
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsString(jv1))
 			return jsBoolean(false);
@@ -948,7 +948,7 @@ jsValue WKE_CALL_TYPE js_wkeNetGetRequestMethod(jsExecState es, void* param)
 	if (!jsIsNumber(jv))
 		return jsUndefined();
 
-	wkeRequestType requestType = wkeNetGetRequestMethod((wkeNetJob)jsToInt(es, jv));
+	wkeRequestType requestType = wkeNetGetRequestMethod((wkeNetJob)(UINT64)jsToDouble(es, jv));
 	switch (requestType)
 	{
 	case kWkeRequestTypeInvalidation:
@@ -976,7 +976,7 @@ jsValue WKE_CALL_TYPE js_wkeNetContinueJob(jsExecState es, void* param)
 	if (!jsIsNumber(jv))
 		return jsBoolean(false);
 
-	wkeNetContinueJob((wkeNetJob)jsToInt(es, jv));
+	wkeNetContinueJob((wkeNetJob)(UINT64)jsToDouble(es, jv));
 
 	return jsBoolean(true);
 }
@@ -993,7 +993,7 @@ jsValue WKE_CALL_TYPE js_wkeNetGetUrlByJob(jsExecState es, void* param)
 	if (!jsIsNumber(jv))
 		return jsUndefined();
 
-	return jsString(es, wkeNetGetUrlByJob((wkeNetJob)jsToInt(es, jv)));
+	return jsString(es, wkeNetGetUrlByJob((wkeNetJob)(UINT64)jsToDouble(es, jv)));
 }
 
 jsValue WKE_CALL_TYPE js_wkeNetCancelRequest(jsExecState es, void* param)
@@ -1008,7 +1008,7 @@ jsValue WKE_CALL_TYPE js_wkeNetCancelRequest(jsExecState es, void* param)
 	if (!jsIsNumber(jv))
 		return jsBoolean(false);
 
-	wkeNetCancelRequest((wkeNetJob)jsToInt(es, jv));
+	wkeNetCancelRequest((wkeNetJob)(UINT64)jsToDouble(es, jv));
 
 	return jsBoolean(true);
 }
@@ -1029,7 +1029,7 @@ jsValue WKE_CALL_TYPE js_wkeNetChangeRequestUrl(jsExecState es, void* param)
 	if (!jsIsString(jv1))
 		return jsBoolean(false);
 	
-	wkeNetChangeRequestUrl((wkeNetJob)jsToInt(es, jv0), jsToString(es, jv1));
+	wkeNetChangeRequestUrl((wkeNetJob)(UINT64)jsToDouble(es, jv0), jsToString(es, jv1));
 
 	return jsBoolean(true);
 }
@@ -1046,7 +1046,7 @@ jsValue WKE_CALL_TYPE js_wkeNetHoldJobToAsynCommit(jsExecState es, void* param)
 	if (!jsIsNumber(jv))
 		return jsBoolean(false);
 
-	wkeNetHoldJobToAsynCommit((wkeNetJob)jsToInt(es, jv));
+	wkeNetHoldJobToAsynCommit((wkeNetJob)(UINT64)jsToDouble(es, jv));
 
 	return jsBoolean(true);
 }
@@ -1072,7 +1072,7 @@ jsValue WKE_CALL_TYPE js_wkeNetCreateWebUrlRequest(jsExecState es, void* param)
 		return jsUndefined();
 
 	wkeWebUrlRequestPtr requestPtr = wkeNetCreateWebUrlRequest(jsToString(es, jv0), jsToString(es, jv1), jsToString(es, jv2));
-	return jsInt((int)requestPtr);
+	return jsDouble((double)(UINT64)requestPtr);
 }
 
 jsValue WKE_CALL_TYPE js_wkeNetAddHTTPHeaderFieldToUrlRequest(jsExecState es, void* param)
