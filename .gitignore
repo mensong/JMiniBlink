@@ -12,3 +12,4 @@
 /x64/Debug
 /x64/Release
 /.vs/JMiniBlink/v14/*.suo
+/test/cookies.dat
