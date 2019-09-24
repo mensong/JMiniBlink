@@ -112,6 +112,9 @@
       <Command>
       </Command>
     </CustomBuildStep>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -136,6 +139,9 @@
     <PreBuildEvent>
       <Command>copy "$(SolutionDir)MiniBlink\$(PlatformTarget)\miniblink.*" "$(OutDir)"</Command>
     </PreBuildEvent>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -195,6 +201,9 @@
     <PreBuildEvent>
       <Command>copy "$(SolutionDir)MiniBlink\$(PlatformTarget)\miniblink.*" "$(OutDir)"</Command>
     </PreBuildEvent>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
