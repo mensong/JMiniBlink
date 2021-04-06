@@ -347,7 +347,7 @@ bool HandlePromptBox(wkeWebView webView, void* param, const wkeString msg, const
 	int x = (parentWidth - width) / 2;
 	int y = (parentHeight - height) / 2;
 	_InitInputBoxW(NULL);
-	wchar_t* pRes =  _InputBoxW(wv.data(), L"JMiniBlink", L"", x, y);	
+	const wchar_t* pRes =  _InputBoxW(wv.data(), L"JMiniBlink", L"", x, y);	
 	wkeSetStringW(result, pRes, wcslen(pRes));
 
 	return true;
