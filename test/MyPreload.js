@@ -1,5 +1,5 @@
 
-wkeShowDevtools('WebInspector/inspector.html');
+//wkeShowDevtools('WebInspector/inspector.html');
 
 LoadPlugins("Plugin.MFCTest.dll");
 
