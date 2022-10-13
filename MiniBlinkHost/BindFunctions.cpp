@@ -118,14 +118,14 @@ jsValue WKE_CALL_TYPE js_wkeGC(jsExecState es, void* param)
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsNumber(jv0))
-		{
-			int intervalSec = jsToInt(es, jv0);
-			wkeGC(app->window, intervalSec);
-			return jsBoolean(true);
-		}
+		if (!jsIsNumber(jv0))
+			return jsThrowException(es, "Parameters error.");
+		
+		int intervalSec = jsToInt(es, jv0);
+		wkeGC(app->window, intervalSec);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetResourceGc(jsExecState es, void* param)
@@ -136,14 +136,14 @@ jsValue WKE_CALL_TYPE js_wkeSetResourceGc(jsExecState es, void* param)
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsNumber(jv0))
-		{
-			int intervalSec = jsToInt(es, jv0);
-			wkeSetResourceGc(app->window, intervalSec);
-			return jsBoolean(true);
-		}
+		if (!jsIsNumber(jv0))
+			return jsThrowException(es, "Parameters error.");
+		
+		int intervalSec = jsToInt(es, jv0);
+		wkeSetResourceGc(app->window, intervalSec);
+		return jsUndefined();		
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 //jsValue WKE_CALL_TYPE js_wkeCreateWebView(jsExecState es, void* param)
@@ -168,13 +168,13 @@ jsValue WKE_CALL_TYPE js_wkeSetMemoryCacheEnable(jsExecState es, void* param)
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsBoolean(jv0))
-		{
-			wkeSetMemoryCacheEnable(app->window, jsToBoolean(es, jv0));
-			return jsBoolean(true);
-		}
+		if (!jsIsBoolean(jv0))
+			return jsThrowException(es, "Parameters error.");
+
+		wkeSetMemoryCacheEnable(app->window, jsToBoolean(es, jv0));
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetMouseEnabled(jsExecState es, void* param)
@@ -185,13 +185,13 @@ jsValue WKE_CALL_TYPE js_wkeSetMouseEnabled(jsExecState es, void* param)
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsBoolean(jv0))
-		{
-			wkeSetMouseEnabled(app->window, jsToBoolean(es, jv0));
-			return jsBoolean(true);
-		}
+		if (!jsIsBoolean(jv0))
+			return jsThrowException(es, "Parameters error.");
+
+		wkeSetMouseEnabled(app->window, jsToBoolean(es, jv0));
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetTouchEnabled(jsExecState es, void* param)
@@ -202,13 +202,13 @@ jsValue WKE_CALL_TYPE js_wkeSetTouchEnabled(jsExecState es, void* param)
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsBoolean(jv0))
-		{
-			wkeSetTouchEnabled(app->window, jsToBoolean(es, jv0));
-			return jsBoolean(true);
-		}
+		if (!jsIsBoolean(jv0))
+			return jsThrowException(es, "Parameters error.");
+
+		wkeSetTouchEnabled(app->window, jsToBoolean(es, jv0));
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetNavigationToNewWindowEnable(jsExecState es, void* param)
@@ -219,13 +219,13 @@ jsValue WKE_CALL_TYPE js_wkeSetNavigationToNewWindowEnable(jsExecState es, void*
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsBoolean(jv0))
-		{
-			wkeSetNavigationToNewWindowEnable(app->window, jsToBoolean(es, jv0));
-			return jsBoolean(true);
-		}
+		if (!jsIsBoolean(jv0))
+			return jsThrowException(es, "Parameters error.");
+		
+		wkeSetNavigationToNewWindowEnable(app->window, jsToBoolean(es, jv0));
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetCspCheckEnable(jsExecState es, void* param)
@@ -236,13 +236,13 @@ jsValue WKE_CALL_TYPE js_wkeSetCspCheckEnable(jsExecState es, void* param)
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsBoolean(jv0))
-		{
-			wkeSetCspCheckEnable(app->window, jsToBoolean(es, jv0));
-			return jsBoolean(true);
-		}
+		if (!jsIsBoolean(jv0))
+			return jsThrowException(es, "Parameters error.");
+		
+		wkeSetCspCheckEnable(app->window, jsToBoolean(es, jv0));
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetNpapiPluginsEnabled(jsExecState es, void* param)
@@ -253,13 +253,14 @@ jsValue WKE_CALL_TYPE js_wkeSetNpapiPluginsEnabled(jsExecState es, void* param)
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsBoolean(jv0))
-		{
-			wkeSetNpapiPluginsEnabled(app->window, jsToBoolean(es, jv0));
-			return jsBoolean(true);
-		}
+		if (!jsIsBoolean(jv0))
+			return jsThrowException(es, "Parameters error.");
+		
+		wkeSetNpapiPluginsEnabled(app->window, jsToBoolean(es, jv0));
+		return jsUndefined();
+		
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetHeadlessEnabled(jsExecState es, void* param)
@@ -270,13 +271,13 @@ jsValue WKE_CALL_TYPE js_wkeSetHeadlessEnabled(jsExecState es, void* param)
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsBoolean(jv0))
-		{
-			wkeSetNpapiPluginsEnabled(app->window, jsToBoolean(es, jv0));
-			return jsBoolean(true);
-		}
+		if (!jsIsBoolean(jv0))
+			return jsThrowException(es, "Parameters error.");
+		
+		wkeSetNpapiPluginsEnabled(app->window, jsToBoolean(es, jv0));
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetDragEnable(jsExecState es, void* param)
@@ -287,13 +288,13 @@ jsValue WKE_CALL_TYPE js_wkeSetDragEnable(jsExecState es, void* param)
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsBoolean(jv0))
-		{
-			wkeSetDragEnable(app->window, jsToBoolean(es, jv0));
-			return jsBoolean(true);
-		}
+		if (!jsIsBoolean(jv0))
+			return jsThrowException(es, "Parameters error.");
+		
+		wkeSetDragEnable(app->window, jsToBoolean(es, jv0));
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetDragDropEnable(jsExecState es, void* param)
@@ -304,13 +305,14 @@ jsValue WKE_CALL_TYPE js_wkeSetDragDropEnable(jsExecState es, void* param)
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsBoolean(jv0))
-		{
-			wkeSetDragDropEnable(app->window, jsToBoolean(es, jv0));
-			return jsBoolean(true);
-		}
+		if (!jsIsBoolean(jv0))
+			return jsThrowException(es, "Parameters error.");
+
+		wkeSetDragDropEnable(app->window, jsToBoolean(es, jv0));
+		return jsUndefined();
+		
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetLanguage(jsExecState es, void* param)
@@ -321,13 +323,13 @@ jsValue WKE_CALL_TYPE js_wkeSetLanguage(jsExecState es, void* param)
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsString(jv0))
-		{
-			wkeSetLanguage(app->window, jsToString(es, jv0));
-			return jsBoolean(true);
-		}
+		if (!jsIsString(jv0))
+			return jsThrowException(es, "Parameters error.");
+
+		wkeSetLanguage(app->window, jsToString(es, jv0));
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetViewNetInterface(jsExecState es, void* param)
@@ -338,13 +340,13 @@ jsValue WKE_CALL_TYPE js_wkeSetViewNetInterface(jsExecState es, void* param)
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsString(jv0))
-		{
-			wkeSetLanguage(app->window, jsToString(es, jv0));
-			return jsBoolean(true);
-		}
+		if (!jsIsString(jv0))
+			return jsThrowException(es, "Parameters error.");
+		
+		wkeSetLanguage(app->window, jsToString(es, jv0));
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetProxy(jsExecState es, void* param)
@@ -359,36 +361,36 @@ jsValue WKE_CALL_TYPE js_wkeSetProxy(jsExecState es, void* param)
 
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		proxySetting.type = (wkeProxyType)jsToInt(es, jv0);
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsString(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		const utf8* hostName = jsToString(es, jv1);
 		strcpy_s(proxySetting.hostname, 100, hostName);
 
 		jsValue jv2 = jsArg(es, 2);
 		if (!jsIsNumber(jv2))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		proxySetting.port = jsToInt(es, jv2);
 
 		jsValue jv3 = jsArg(es, 3);
 		if (!jsIsString(jv3))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		const utf8* userName = jsToString(es, jv3);
 		strcpy_s(proxySetting.username, 50, userName);
 
 		jsValue jv4 = jsArg(es, 4);
 		if (!jsIsString(jv4))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		const utf8* password = jsToString(es, jv4);
 		strcpy_s(proxySetting.password, 50, password);
 
 		wkeSetProxy(&proxySetting);
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetViewProxy(jsExecState es, void* param)
@@ -403,36 +405,36 @@ jsValue WKE_CALL_TYPE js_wkeSetViewProxy(jsExecState es, void* param)
 
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		proxySetting.type = (wkeProxyType)jsToInt(es, jv0);
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsString(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		const utf8* hostName = jsToString(es, jv1);
 		strcpy_s(proxySetting.hostname, 100, hostName);
 
 		jsValue jv2 = jsArg(es, 2);
 		if (!jsIsNumber(jv2))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		proxySetting.port = jsToInt(es, jv2);
 
 		jsValue jv3 = jsArg(es, 3);
 		if (!jsIsString(jv3))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		const utf8* userName = jsToString(es, jv3);
 		strcpy_s(proxySetting.username, 50, userName);
 
 		jsValue jv4 = jsArg(es, 4);
 		if (!jsIsString(jv4))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		const utf8* password = jsToString(es, jv4);
 		strcpy_s(proxySetting.password, 50, password);
 
 		wkeSetViewProxy(app->window, &proxySetting);
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeGetName(jsExecState es, void* param)
@@ -451,11 +453,11 @@ jsValue WKE_CALL_TYPE js_wkeSetName(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeSetName(app->window, jsToString(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetHandle(jsExecState es, void* param)
@@ -467,11 +469,11 @@ jsValue WKE_CALL_TYPE js_wkeSetHandle(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeSetHandle(app->window, (HWND)jsToInt(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetHwndRenderOffset(jsExecState es, void* param)
@@ -483,16 +485,16 @@ jsValue WKE_CALL_TYPE js_wkeSetHwndRenderOffset(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsNumber(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		wkeSetHwndRenderOffset(app->window, jsToInt(es, jv0), jsToInt(es, jv1));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetUserAgent(jsExecState es, void* param)
@@ -504,11 +506,11 @@ jsValue WKE_CALL_TYPE js_wkeSetUserAgent(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeSetUserAgent(app->window, jsToString(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeGetUserAgent(jsExecState es, void* param)
@@ -527,7 +529,7 @@ jsValue WKE_CALL_TYPE js_wkeShowDevtools(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		const utf8* path = jsToString(es, jv0);
 		std::string sPath;
 		std::string sPathUpper = path;
@@ -554,9 +556,9 @@ jsValue WKE_CALL_TYPE js_wkeShowDevtools(jsExecState es, void* param)
 		}
 
 		wkeShowDevtools(app->window, sPath.c_str(), NULL, NULL);
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeLoadUrl(jsExecState es, void* param)
@@ -568,11 +570,11 @@ jsValue WKE_CALL_TYPE js_wkeLoadUrl(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeLoadUrl(app->window, jsToString(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkePostUrl(jsExecState es, void* param)
@@ -584,38 +586,38 @@ jsValue WKE_CALL_TYPE js_wkePostUrl(jsExecState es, void* param)
 	{//url,data
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		const utf8* url = jsToString(es, jv0);
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsString(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		const utf8* data = jsToString(es, jv1);
 
 		wkePostUrl(app->window, url, data, strlen(data));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
 	else if (nArgc == 3)
 	{//url, data, Content-Type
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		const utf8* url = jsToString(es, jv0);
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsString(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		const utf8* data = jsToString(es, jv1);
 
 		jsValue jv2 = jsArg(es, 2);
 		if (!jsIsString(jv2))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		const utf8* contentType = jsToString(es, jv2);
 
 		wkePostUrl2(app->window, url, data, strlen(data), contentType);
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeLoadHtml(jsExecState es, void* param)
@@ -627,24 +629,24 @@ jsValue WKE_CALL_TYPE js_wkeLoadHtml(jsExecState es, void* param)
 	{//html
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeLoadHtml(app->window, jsToString(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
 	else if (nArgc == 2)
 	{//html, baseUrl
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsString(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		wkeLoadHtmlWithBaseUrl(app->window, jsToString(es, jv0), jsToString(es, jv1));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeLoadFile(jsExecState es, void* param)
@@ -656,11 +658,11 @@ jsValue WKE_CALL_TYPE js_wkeLoadFile(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeLoadFile(app->window, jsToString(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeGetFrameUrl(jsExecState es, void* param)
@@ -672,10 +674,10 @@ jsValue WKE_CALL_TYPE js_wkeGetFrameUrl(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsUndefined();
+			return jsThrowException(es, "Parameters error.");
 		return jsString(es, wkeGetFrameUrl(app->window, (wkeWebFrameHandle)jsToInt(es, jv0)));
 	}
-	return jsUndefined();
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeGetFrameHandleByUrl(jsExecState es, void* param)
@@ -687,10 +689,10 @@ jsValue WKE_CALL_TYPE js_wkeGetFrameHandleByUrl(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsUndefined();
+			return jsThrowException(es, "Parameters error.");
 		return jsInt((int)wkeGetFrameHandleByUrl(app->window, jsToString(es, jv0)));
 	}
-	return jsUndefined();
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeStopLoad(jsExecState es, void* param)
@@ -720,11 +722,11 @@ jsValue WKE_CALL_TYPE js_wkeGoToHistoryOffset(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeGoToHistoryOffset(app->window, jsToInt(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeGoToHistoryIndex(jsExecState es, void* param)
@@ -736,11 +738,11 @@ jsValue WKE_CALL_TYPE js_wkeGoToHistoryIndex(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeGoToHistoryIndex(app->window, jsToInt(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeCanGoBackx(jsExecState es, void* param)
@@ -844,11 +846,11 @@ jsValue WKE_CALL_TYPE js_wkeSetCookieEnabled(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsBoolean(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeSetCookieEnabled(app->window, jsToBoolean(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeIsCookieEnabled(jsExecState es, void* param)
@@ -867,11 +869,11 @@ jsValue WKE_CALL_TYPE js_wkeSetCookieJarDirectory(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeSetCookieJarDirectory(app->window, jsToString(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetCookieJarFilePath(jsExecState es, void* param)
@@ -883,11 +885,39 @@ jsValue WKE_CALL_TYPE js_wkeSetCookieJarFilePath(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeSetCookieJarFilePath(app->window, jsToString(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
+}
+
+jsValue WKE_CALL_TYPE js_wkeGetCookie(jsExecState es, void* param)
+{
+	Application* app = (Application*)param;
+	const utf8* data = wkeGetCookie(app->window);
+	return jsString(es, data);
+}
+
+jsValue WKE_CALL_TYPE js_wkeSetCookie(jsExecState es, void* param)
+{
+	Application* app = (Application*)param;
+
+	int nArgc = jsArgCount(es);
+	if (nArgc == 2)
+	{
+		jsValue jv0 = jsArg(es, 0);
+		if (!jsIsString(jv0))
+			return jsThrowException(es, "Parameters error.");
+		jsValue jv1 = jsArg(es, 1);
+		if (!jsIsString(jv1))
+			return jsThrowException(es, "Parameters error.");
+
+		wkeSetCookie(app->window, jsToString(es, jv0), jsToString(es, jv1));
+		return jsUndefined();
+	}
+	
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetLocalStorageDirectory(jsExecState es, void* param)
@@ -899,11 +929,11 @@ jsValue WKE_CALL_TYPE js_wkeSetLocalStorageDirectory(jsExecState es, void* param
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeSetLocalStorageDirectory(app->window, jsToString(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeAddPluginDirectory(jsExecState es, void* param)
@@ -915,11 +945,11 @@ jsValue WKE_CALL_TYPE js_wkeAddPluginDirectory(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeAddPluginDirectory(app->window, jsToString(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetMediaVolume(jsExecState es, void* param)
@@ -931,11 +961,11 @@ jsValue WKE_CALL_TYPE js_wkeSetMediaVolume(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeSetMediaVolume(app->window, jsToFloat(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeGetMediaVolume(jsExecState es, void* param)
@@ -954,24 +984,24 @@ jsValue WKE_CALL_TYPE js_wkeFireMouseEvent(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsNumber(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv2 = jsArg(es, 2);
 		if (!jsIsNumber(jv2))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv3 = jsArg(es, 3);
 		if (!jsIsNumber(jv3))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		return jsBoolean(wkeFireMouseEvent(app->window, jsToInt(es, jv0), 
 			jsToInt(es, jv1), jsToInt(es, jv2), jsToInt(es, jv3)));
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeFireMouseWheelEvent(jsExecState es, void* param)
@@ -983,24 +1013,24 @@ jsValue WKE_CALL_TYPE js_wkeFireMouseWheelEvent(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsNumber(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv2 = jsArg(es, 2);
 		if (!jsIsNumber(jv2))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv3 = jsArg(es, 3);
 		if (!jsIsNumber(jv3))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		return jsBoolean(wkeFireMouseWheelEvent(app->window, jsToInt(es, jv0),
 			jsToInt(es, jv1), jsToInt(es, jv2), jsToInt(es, jv3)));
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeFireKeyUpEvent(jsExecState es, void* param)
@@ -1012,16 +1042,16 @@ jsValue WKE_CALL_TYPE js_wkeFireKeyUpEvent(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsNumber(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		return jsBoolean(wkeFireKeyUpEvent(app->window, jsToInt(es, jv0),
 			jsToInt(es, jv1), false));
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeFireKeyDownEvent(jsExecState es, void* param)
@@ -1033,16 +1063,16 @@ jsValue WKE_CALL_TYPE js_wkeFireKeyDownEvent(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsNumber(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		return jsBoolean(wkeFireKeyDownEvent(app->window, jsToInt(es, jv0),
 			jsToInt(es, jv1), false));
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeFireKeyPressEvent(jsExecState es, void* param)
@@ -1054,16 +1084,16 @@ jsValue WKE_CALL_TYPE js_wkeFireKeyPressEvent(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsNumber(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		return jsBoolean(wkeFireKeyPressEvent(app->window, jsToInt(es, jv0),
 			jsToInt(es, jv1), false));
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeFireWindowsMessage(jsExecState es, void* param)
@@ -1075,25 +1105,25 @@ jsValue WKE_CALL_TYPE js_wkeFireWindowsMessage(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsNumber(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv2 = jsArg(es, 2);
 		if (!jsIsBoolean(jv2))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv3 = jsArg(es, 3);
 		if (!jsIsBoolean(jv3))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		LRESULT res = 0;
 		return jsBoolean(wkeFireWindowsMessage(app->window, (HWND)jsToInt(es, jv0),
 			(UINT)jsToInt(es, jv1), (WPARAM)jsToDouble(es, jv2), (LPARAM)jsToDouble(es, jv3), &res));
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetFocus(jsExecState es, void* param)
@@ -1121,24 +1151,24 @@ jsValue WKE_CALL_TYPE js_wkeRunJsInAllFrames(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeRunJsInAllFrames(app->window, jsToString(es, jv0), false);
-		return jsBoolean(true);
+		return jsUndefined();
 	}
 	else if (nArgc == 2)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsBoolean(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		wkeRunJsInAllFrames(app->window, jsToString(es, jv0), jsToBoolean(es, jv1));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetZoomFactor(jsExecState es, void* param)
@@ -1150,11 +1180,11 @@ jsValue WKE_CALL_TYPE js_wkeSetZoomFactor(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		wkeSetZoomFactor(app->window, jsToFloat(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeGetZoomFactor(jsExecState es, void* param)
@@ -1172,11 +1202,11 @@ jsValue WKE_CALL_TYPE js_wkeSetDragFiles(jsExecState es, void* param)
 	{//clientPoint.x, clientPoint.y, filePath(string)|filePaths(Array)
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsNumber(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		POINT ptClient;
 		ptClient.x = jsToInt(es, jv0);
@@ -1213,7 +1243,7 @@ jsValue WKE_CALL_TYPE js_wkeSetDragFiles(jsExecState es, void* param)
 		}
 		else
 		{
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 		}
 				
 		wkeSetDragFiles(app->window, &ptClient, &ptScreen, files, nFilesCount);
@@ -1223,10 +1253,10 @@ jsValue WKE_CALL_TYPE js_wkeSetDragFiles(jsExecState es, void* param)
 			wkeDeleteString(files[i]);
 		}
 		
-		return jsBoolean(true);
+		return jsUndefined();
 	}
 
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeIsMainFrame(jsExecState es, void* param)
@@ -1237,10 +1267,10 @@ jsValue WKE_CALL_TYPE js_wkeIsMainFrame(jsExecState es, void* param)
 	if (nArgc == 1)
 	{//指定了frame handle
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsNumber(jv0))
-		{
-			return jsBoolean(wkeIsMainFrame(app->window, (wkeWebFrameHandle)jsToInt(es, jv0)));
-		}
+		if (!jsIsNumber(jv0))
+			return jsThrowException(es, "Parameters error.");
+
+		return jsBoolean(wkeIsMainFrame(app->window, (wkeWebFrameHandle)jsToInt(es, jv0)));
 	}
 
 	//没有指定，则根据网址找
@@ -1261,12 +1291,12 @@ jsValue WKE_CALL_TYPE js_wkeIsWebRemoteFrame(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (jsIsNumber(jv0))
-		{
-			return jsBoolean(wkeIsWebRemoteFrame(app->window, (wkeWebFrameHandle)jsToInt(es, jv0)));
-		}
+			return jsThrowException(es, "Parameters error.");
+
+		return jsBoolean(wkeIsWebRemoteFrame(app->window, (wkeWebFrameHandle)jsToInt(es, jv0)));
 	}
 
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeWebFrameGetMainFrame(jsExecState es, void* param)
@@ -1284,11 +1314,11 @@ jsValue WKE_CALL_TYPE js_wkeRunJsByFrame(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsUndefined();
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsString(jv1))
-			return jsUndefined();
+			return jsThrowException(es, "Parameters error.");
 
 		return wkeRunJsByFrame(app->window, (wkeWebFrameHandle)jsToInt(es, jv0), jsToString(es, jv1), false);
 	}
@@ -1296,19 +1326,19 @@ jsValue WKE_CALL_TYPE js_wkeRunJsByFrame(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsUndefined();
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsString(jv1))
-			return jsUndefined();
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv2 = jsArg(es, 2);
 		if (!jsIsBoolean(jv2))
-			return jsUndefined();
+			return jsThrowException(es, "Parameters error.");
 
 		return wkeRunJsByFrame(app->window, (wkeWebFrameHandle)jsToInt(es, jv0), jsToString(es, jv1), jsToBoolean(es, jv2));
 	}
-	return jsUndefined();
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeInsertCSSByFrame(jsExecState es, void* param)
@@ -1320,16 +1350,16 @@ jsValue WKE_CALL_TYPE js_wkeInsertCSSByFrame(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsString(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		wkeInsertCSSByFrame(app->window, (wkeWebFrameHandle)jsToInt(es, jv0), jsToString(es, jv1));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeCreateWebWindow(jsExecState es, void* param)
@@ -1341,11 +1371,11 @@ jsValue WKE_CALL_TYPE js_wkeCreateWebWindow(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsObject(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 				
 		jsValue jUrl = jsGet(es, jv0, "url");
 		if (!jsIsString(jUrl))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		char filePath[MAX_PATH] = { 0 };
 		::GetModuleFileNameA(NULL, filePath, MAX_PATH);
@@ -1388,14 +1418,14 @@ jsValue WKE_CALL_TYPE js_wkeCreateWebWindow(jsExecState es, void* param)
 			sCmd += jsToString(es, j);
 		}
 		sCmd += " -simName ";
-		sCmd += app->simName;
+		sCmd += app->SimName();
 
 		WinExec(sCmd.c_str(), SW_SHOW);
 
-		return jsBoolean(true);
+		return jsUndefined();
 	}
 
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeDestroyWebWindow(jsExecState es, void* param)
@@ -1420,12 +1450,12 @@ jsValue WKE_CALL_TYPE js_wkeShowWindow(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsBoolean(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		wkeShowWindow(app->window, jsToBoolean(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeEnableWindow(jsExecState es, void* param)
@@ -1437,12 +1467,12 @@ jsValue WKE_CALL_TYPE js_wkeEnableWindow(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsBoolean(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		wkeEnableWindow(app->window, jsToBoolean(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeMoveWindow(jsExecState es, void* param)
@@ -1454,24 +1484,24 @@ jsValue WKE_CALL_TYPE js_wkeMoveWindow(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsNumber(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv2 = jsArg(es, 2);
 		if (!jsIsNumber(jv2))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv3 = jsArg(es, 3);
 		if (!jsIsNumber(jv3))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		wkeMoveWindow(app->window, jsToInt(es, jv0), jsToInt(es, jv1), jsToInt(es, jv2), jsToInt(es, jv3));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeMoveToCenter(jsExecState es, void* param)
@@ -1490,16 +1520,16 @@ jsValue WKE_CALL_TYPE js_wkeResizeWindow(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsNumber(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		wkeResizeWindow(app->window, jsToInt(es, jv0), jsToInt(es, jv1));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeCreateResizeBorders(jsExecState es, void* param)
@@ -1511,44 +1541,44 @@ jsValue WKE_CALL_TYPE js_wkeCreateResizeBorders(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsNumber(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
 		if (!jsIsNumber(jv1))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv2 = jsArg(es, 2);
 		if (!jsIsNumber(jv2))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv3 = jsArg(es, 3);
 		if (!jsIsNumber(jv3))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv4 = jsArg(es, 4);
 		if (!jsIsNumber(jv4))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv5 = jsArg(es, 5);
 		if (!jsIsNumber(jv5))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv6 = jsArg(es, 6);
 		if (!jsIsNumber(jv6))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv7 = jsArg(es, 7);
 		if (!jsIsNumber(jv7))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		wkeCreateResizeBorders(app->window, 
 			jsToBoolean(es, jv0), jsToBoolean(es, jv1),
 			jsToBoolean(es, jv2), jsToBoolean(es, jv3), 
 			jsToBoolean(es, jv4), jsToBoolean(es, jv5), 
 			jsToBoolean(es, jv6), jsToBoolean(es, jv7));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
 }
 
 jsValue WKE_CALL_TYPE js_wkeSetWindowTitle(jsExecState es, void* param)
@@ -1560,12 +1590,18 @@ jsValue WKE_CALL_TYPE js_wkeSetWindowTitle(jsExecState es, void* param)
 	{
 		jsValue jv0 = jsArg(es, 0);
 		if (!jsIsString(jv0))
-			return jsBoolean(false);
+			return jsThrowException(es, "Parameters error.");
 
 		wkeSetWindowTitle(app->window, jsToString(es, jv0));
-		return jsBoolean(true);
+		return jsUndefined();
 	}
-	return jsBoolean(false);
+	return jsThrowException(es, "Parameters error.");
+}
+
+jsValue WKE_CALL_TYPE js_wkeGetTitle(jsExecState es, void* param)
+{
+	Application* app = (Application*)param;
+	return jsString(es, wkeGetTitle(app->window));
 }
 
 
@@ -1587,11 +1623,11 @@ void InitFunctions(Application* app)
 	*/
 	wkeJsBindFunction("wkeGetVersionString", js_wkeGetVersionString, app, 0);
 	/*
-	* wkeGC(intervalSec:int) : boolean;
+	* wkeGC(intervalSec:int) : undefined;
 	*/
 	wkeJsBindFunction("wkeGC", js_wkeGC, app, 1);
 	/*
-	* wkeSetResourceGc(intervalSec:int) : boolean;
+	* wkeSetResourceGc(intervalSec:int) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetResourceGc", js_wkeSetResourceGc, app, 1);
 	
@@ -1602,52 +1638,52 @@ void InitFunctions(Application* app)
 	wkeJsBindFunction("wkeDestroyWebView", js_wkeDestroyWebView, app, 0);
 
 	/*
-	* wkeSetMemoryCacheEnable(enable:boolean) : boolean;
+	* wkeSetMemoryCacheEnable(enable:boolean) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetMemoryCacheEnable", js_wkeSetMemoryCacheEnable, app, 1);
 	/*
-	* wkeSetMouseEnabled(enable:boolean) : boolean;
+	* wkeSetMouseEnabled(enable:boolean) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetMouseEnabled", js_wkeSetMouseEnabled, app, 1);
 	/*
-	* wkeSetTouchEnabled(enable:boolean) : boolean;
+	* wkeSetTouchEnabled(enable:boolean) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetTouchEnabled", js_wkeSetTouchEnabled, app, 1);
 	/*
-	* wkeSetNavigationToNewWindowEnable(enable:boolean) : boolean;
+	* wkeSetNavigationToNewWindowEnable(enable:boolean) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetNavigationToNewWindowEnable", js_wkeSetNavigationToNewWindowEnable, app, 1);
 	/*
-	* wkeSetCspCheckEnable(enable:boolean) : boolean;
+	* wkeSetCspCheckEnable(enable:boolean) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetCspCheckEnable", js_wkeSetCspCheckEnable, app, 1);
 	/*
-	* wkeSetNpapiPluginsEnabled(enable:boolean) : boolean;
+	* wkeSetNpapiPluginsEnabled(enable:boolean) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetNpapiPluginsEnabled", js_wkeSetNpapiPluginsEnabled, app, 1);
 	/*
-	* wkeSetHeadlessEnabled(enable:boolean) : boolean;
+	* wkeSetHeadlessEnabled(enable:boolean) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetHeadlessEnabled", js_wkeSetHeadlessEnabled, app, 1);
 	/*
-	* wkeSetDragEnable(enable:boolean) : boolean;
+	* wkeSetDragEnable(enable:boolean) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetDragEnable", js_wkeSetDragEnable, app, 1);
 	/*
-	* wkeSetDragDropEnable(enable:boolean) : boolean;
+	* wkeSetDragDropEnable(enable:boolean) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetDragDropEnable", js_wkeSetDragDropEnable, app, 1);
 
 	/*
-	* wkeSetLanguage(newLanguage:string) : boolean;
+	* wkeSetLanguage(newLanguage:string) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetLanguage", js_wkeSetLanguage, app, 1);
 	/*
-	* wkeSetViewNetInterface(interface:string) : boolean;
+	* wkeSetViewNetInterface(interface:string) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetViewNetInterface", js_wkeSetViewNetInterface, app, 1);
 	/* 
-	* wkeSetProxy(proxyType:int, hostName:string, port:int, username:string, password:string) : boolean;
+	* wkeSetProxy(proxyType:int, hostName:string, port:int, username:string, password:string) : undefined;
 	*   proxyType  - 参见wkeProxyType的定义
 	*/
 	wkeJsBindFunction("wkeSetProxy", js_wkeSetProxy, app, 5);
@@ -1662,19 +1698,19 @@ void InitFunctions(Application* app)
 	*/
 	wkeJsBindFunction("wkeGetName", js_wkeGetName, app, 0);
 	/*
-	* wkeSetName(name:string) : boolean;
+	* wkeSetName(name:string) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetName", js_wkeSetName, app, 1);
 	/*
-	* wkeSetHandle(handle:int) : boolean;
+	* wkeSetHandle(handle:int) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetHandle", js_wkeSetHandle, app, 1);
 	/*
-	* wkeSetHwndRenderOffset(x:int, y:int) : boolean;
+	* wkeSetHwndRenderOffset(x:int, y:int) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetHwndRenderOffset", js_wkeSetHwndRenderOffset, app, 2);
 	/*
-	* wkeSetUserAgent(ua:string) : boolean;
+	* wkeSetUserAgent(ua:string) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetUserAgent", js_wkeSetUserAgent, app, 1);
 	/*
@@ -1683,16 +1719,16 @@ void InitFunctions(Application* app)
 	wkeJsBindFunction("wkeGetUserAgent", js_wkeGetUserAgent, app, 0);
 
 	/*
-	* wkeShowDevtools(inspectorFilePath:string) : boolean;
+	* wkeShowDevtools(inspectorFilePath:string) : undefined;
 	*/
 	wkeJsBindFunction("wkeShowDevtools", js_wkeShowDevtools, app, 1);
 
 	/*
-	* wkeLoadUrl(url:string) : boolean;
+	* wkeLoadUrl(url:string) : undefined;
 	*/
 	wkeJsBindFunction("wkeLoadUrl", js_wkeLoadUrl, app, 1);
 	/*
-	* wkePostUrl(url:string, data:string, [contentType:string]) : boolean;
+	* wkePostUrl(url:string, data:string, [contentType:string]) : undefined;
 	*/
 	wkeJsBindFunction("wkePostUrl", js_wkePostUrl, app, -1);
 	/*
@@ -1722,11 +1758,11 @@ void InitFunctions(Application* app)
 	wkeJsBindFunction("wkeReload", js_wkeReload, app, 0);
 
 	/*
-	* wkeGoToHistoryOffset(offset:int) : boolean;
+	* wkeGoToHistoryOffset(offset:int) : undefined;
 	*/
 	wkeJsBindFunction("wkeGoToHistoryOffset", js_wkeGoToHistoryOffset, app, 1);
 	/*
-	* wkeGoToHistoryIndex(index:int) : boolean;
+	* wkeGoToHistoryIndex(index:int) : undefined;
 	*/
 	wkeJsBindFunction("wkeGoToHistoryIndex", js_wkeGoToHistoryIndex, app, 1);
 	/*
@@ -1780,7 +1816,7 @@ void InitFunctions(Application* app)
 	wkeJsBindFunction("wkeEditorRedo", js_wkeEditorRedo, app, 0);
 	
 	/*
-	* wkeSetCookieEnabled(enable:boolean) : boolean;
+	* wkeSetCookieEnabled(enable:boolean) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetCookieEnabled", js_wkeSetCookieEnabled, app, 1);
 	/*
@@ -1788,24 +1824,32 @@ void InitFunctions(Application* app)
 	*/
 	wkeJsBindFunction("wkeIsCookieEnabled", js_wkeIsCookieEnabled, app, 0);
 	/*
-	* wkeSetCookieJarDirectory(dir:string) : boolean;
+	* wkeSetCookieJarDirectory(dir:string) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetCookieJarDirectory", js_wkeSetCookieJarDirectory, app, 1);
 	/*
-	* wkeSetCookieJarFilePath(filePath:string) : boolean;
+	* wkeSetCookieJarFilePath(filePath:string) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetCookieJarFilePath", js_wkeSetCookieJarFilePath, app, 1);
 	/*
-	* wkeSetLocalStorageDirectory(dir:string) : boolean;
+	* wkeGetCookie() : boolean;
+	*/
+	wkeJsBindFunction("wkeGetCookie", js_wkeGetCookie, app, 0);
+	/*
+	* wkeSetCookie(url:string, data:string) : undefined;
+	*/
+	wkeJsBindFunction("wkeSetCookie", js_wkeSetCookie, app, 2);
+	/*
+	* wkeSetLocalStorageDirectory(dir:string) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetLocalStorageDirectory", js_wkeSetLocalStorageDirectory, app, 1);
 	/*
-	* wkeAddPluginDirectory(dir:string) : boolean;
+	* wkeAddPluginDirectory(dir:string) : undefined;
 	*/
 	wkeJsBindFunction("wkeAddPluginDirectory", js_wkeAddPluginDirectory, app, 1);
 	
 	/*
-	* wkeSetMediaVolume(value:float) : boolean;
+	* wkeSetMediaVolume(value:float) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetMediaVolume", js_wkeSetMediaVolume, app, 1);
 	/*
@@ -1888,16 +1932,16 @@ void InitFunctions(Application* app)
 	*/
 	wkeJsBindFunction("wkeRunJsInAllFrames", js_wkeRunJsInAllFrames, app, -1);
 	/*
-	* wkeRunJsByFrame(frameId:int, js:string, [isInClosure:boolean]) : boolean;
+	* wkeRunJsByFrame(frameId:int, js:string, [isInClosure:boolean]) : js result;
 	*/
 	wkeJsBindFunction("wkeRunJsByFrame", js_wkeRunJsByFrame, app, -1);
 	/*
-	* wkeInsertCSSByFrame(frameId:int, css:string) : boolean;
+	* wkeInsertCSSByFrame(frameId:int, css:string) : undefined;
 	*/
 	wkeJsBindFunction("wkeInsertCSSByFrame", js_wkeInsertCSSByFrame, app, 2);
 	
 	/*
-	* wkeCreateWebWindow(setting:map) : boolean;
+	* wkeCreateWebWindow(setting:map) : undefined;
 	*   setting - {"url" : string, "hide" : boolean, "tran" : boolean, "width" : int, "height" - int, "preload" : string}
 	*/
 	wkeJsBindFunction("wkeCreateWebWindow", js_wkeCreateWebWindow, app, 1);
@@ -1911,15 +1955,15 @@ void InitFunctions(Application* app)
 	wkeJsBindFunction("wkeGetWindowHandle", js_wkeGetWindowHandle, app, 0);
 	
 	/*
-	* wkeShowWindow(show:boolean) : boolean;
+	* wkeShowWindow(show:boolean) : undefined;
 	*/
 	wkeJsBindFunction("wkeShowWindow", js_wkeShowWindow, app, 1);
 	/*
-	* wkeEnableWindow(enable:boolean) : boolean;
+	* wkeEnableWindow(enable:boolean) : undefined;
 	*/
 	wkeJsBindFunction("wkeEnableWindow", js_wkeEnableWindow, app, 1);	
 	/*
-	* wkeMoveWindow(x:int, y:int, width:int, height:int) : boolean;
+	* wkeMoveWindow(x:int, y:int, width:int, height:int) : undefined;
 	*/
 	wkeJsBindFunction("wkeMoveWindow", js_wkeMoveWindow, app, 4);
 	/*
@@ -1927,17 +1971,20 @@ void InitFunctions(Application* app)
 	*/
 	wkeJsBindFunction("wkeMoveToCenter", js_wkeMoveToCenter, app, 0);
 	/*
-	* wkeResizeWindow(width:int, height:int) : boolean;
+	* wkeResizeWindow(width:int, height:int) : undefined;
 	*/
 	wkeJsBindFunction("wkeResizeWindow", js_wkeResizeWindow, app, 2);
 	/*
 	* wkeCreateResizeBorders(bLeft:boolean, bTop:boolean, bRight:boolean, bBottom:boolean, 
-	*    bLeftTop:boolean, bLeftBottom:boolean, bRightTop:boolean, bRightBottom:boolean) : boolean;
+	*    bLeftTop:boolean, bLeftBottom:boolean, bRightTop:boolean, bRightBottom:boolean) : undefined;
 	*/
 	wkeJsBindFunction("wkeCreateResizeBorders", js_wkeCreateResizeBorders, app, 8);
 	/*
-	* wkeSetWindowTitle(title:string) : boolean;
+	* wkeSetWindowTitle(title:string) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetWindowTitle", js_wkeSetWindowTitle, app, 1);
-	
+	/*
+	* wkeGetTitle() : string;
+	*/
+	wkeJsBindFunction("wkeGetTitle", js_wkeGetTitle, app, 0);
 }

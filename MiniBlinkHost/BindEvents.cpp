@@ -30,7 +30,7 @@ void HandleDocumentReady2(wkeWebView webView, void* param, wkeWebFrameHandle fra
 #endif
 
 	// 加载preload 
-	std::string sJS = ReadText(app->preloadFile.c_str());
+	std::string sJS = ReadText(app->PreloadFile());
 	wkeRunJS(webView, sJS.c_str(), false);
 
 	//执行js定义的事件
@@ -48,8 +48,9 @@ void HandleDocumentReady2(wkeWebView webView, void* param, wkeWebFrameHandle fra
 	if (g_defaultHtml)
 	{// 加载主页
 		g_defaultHtml = false;
-		if (!app->url.empty())
-			wkeLoadUrlW(app->window, app->url.c_str());
+		const wchar_t* p = app->Url();
+		if (wcslen(app->Url()) != 0)
+			wkeLoadUrlW(app->window, app->Url());
 	}
 }
 
@@ -115,16 +116,16 @@ wkeWebView HandleCreateView(wkeWebView webView, void* param, wkeNavigationType n
 	sCmd += std::to_string(features->height);
 	sCmd += " -tran ";
 	sCmd += app->transparent ? "1" : "0";
-	if (!app->preloadFile.empty())
+	if (wcslen(app->PreloadFile()) != 0)
 	{
 		sCmd += " -preload ";
 		std::vector<char> vctSZ;
-		WCharToMByte(app->preloadFile.c_str(), app->preloadFile.length(), &vctSZ, CP_ACP);
+		WCharToMByte(app->PreloadFile(), wcslen(app->PreloadFile()), &vctSZ, CP_ACP);
 		vctSZ.push_back('\0');
 		sCmd += vctSZ.data();
 	}
 	sCmd += " -simName ";
-	sCmd += app->simName;
+	sCmd += app->SimName();
 
 	WinExec(sCmd.c_str(), SW_SHOW);
 

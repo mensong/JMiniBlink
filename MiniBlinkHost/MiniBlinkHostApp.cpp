@@ -8,11 +8,14 @@
 #pragma comment(lib, "shell32.lib")
 
 #include <shlwapi.h>
-#include "BindEvents.h"
-#include "BindFunctions.h"
 #pragma comment(lib, "shlwapi.lib")
 
-void PrintHelp()
+#include "BindEvents.h"
+#include "BindFunctions.h"
+#include "PluginManager.h"
+
+
+void Application::PrintHelp()
 {
 	const wchar_t* msg =
 		L"命令行参数：\r\n"
@@ -25,8 +28,10 @@ void PrintHelp()
 	MessageBoxW(NULL, msg, L"help", MB_OK);
 }
 
-BOOL ProcessCommandLine(Application* app)
+BOOL Application::ProcessCommandLine()
 {
+	Application* app = this;
+
 	int argc = 0;
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 	AM::CArgumentMan<std::wstring, wchar_t> am;
@@ -88,12 +93,14 @@ BOOL ProcessCommandLine(Application* app)
 		app->simName =  "sim" + std::to_string(::GetTickCount());
 	app->db = new simdb(app->simName.c_str(), 1024, 4096);
 
+	//插件
+	auto pluginPaths = am.GetArgs(L"plugin");
+	for (int i = 0; i < pluginPaths.size(); ++i)
+	{
+		plugins.push_back(UnicodeToAnsi(pluginPaths[i]));
+	}
+
     return TRUE;
-}
-
-void WKE_CALL_TYPE HandlePaintUpdatedCallback(wkeWebView webView, void* param, const HDC hdc, int x, int y, int cx, int cy)
-{
-
 }
 
 LRESULT CALLBACK _staticWindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -123,9 +130,16 @@ LRESULT CALLBACK _staticWindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARA
 }
 
 // 创建主页面窗口
-BOOL CreateWebWindow(Application* app)
+BOOL Application::CreateWebWindow()
 {
+	Application* app = this;
+
 	InitFunctions(app);
+
+	if (!InitPlugins(app, plugins))
+	{
+		MessageBoxW(NULL, L"插件加载失败", L"error", MB_ICONERROR);
+	}
 
 	if (!app->hide)
 	{//创建窗口模式
@@ -139,6 +153,7 @@ BOOL CreateWebWindow(Application* app)
 		
 		InitEvents(app);
 
+		wkeSetWindowTitleW(app->window, L"WebView");
 		wkeMoveToCenter(app->window);
 		wkeShowWindow(app->window, true);
 
@@ -199,13 +214,13 @@ BOOL CreateWebWindow(Application* app)
     return TRUE;
 }
 
-void PrintHelpAndQuit(Application* app)
+void Application::PrintHelpAndQuit()
 {
     PrintHelp();
     PostQuitMessage(0);
 }
 
-void RunMessageLoop(Application* app)
+void Application::RunMessageLoop()
 {
     MSG msg = { 0 };
     while (GetMessageW(&msg, NULL, 0, 0))
@@ -215,27 +230,29 @@ void RunMessageLoop(Application* app)
     }
 }
 
-void RunApplication(Application* app)
+void Application::RunApplication()
 {
+	Application* app = this;
 	//MessageBoxA(NULL, "", "", 0);
 	
-    if (!ProcessCommandLine(app))
+    if (!ProcessCommandLine())
     {
-        PrintHelpAndQuit(app);
+        PrintHelpAndQuit();
         return;
     }
 
-    if (!CreateWebWindow(app))
+    if (!CreateWebWindow())
     {
-        PrintHelpAndQuit(app);
+        PrintHelpAndQuit();
         return;
     }
 
-    RunMessageLoop(app);
+    RunMessageLoop();
 }
 
-void QuitApplication(Application* app)
+void Application::QuitApplication()
 {
+	Application* app = this;
     if (app->window)
     {
         wkeDestroyWebWindow(app->window);

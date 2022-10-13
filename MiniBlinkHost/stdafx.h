@@ -18,10 +18,14 @@
 #include <tchar.h>
 #include <string>
 #include <vector>
+#include <map>
 
 // TODO:  在此处引用程序需要的其他头文件
 
 void MByteToWChar(LPCSTR lpcszStr, DWORD cbMultiByte, std::vector<wchar_t>* out, UINT codePage);
 void WCharToMByte(LPCWSTR lpWideCharStr, DWORD cchWideChar, std::vector<char>* out, UINT codePage);
+
+std::wstring AnsiToUnicode(const std::string& Ansi);
+std::string UnicodeToAnsi(const std::wstring& Unicode);
 
 std::string ReadText(const wchar_t * path);

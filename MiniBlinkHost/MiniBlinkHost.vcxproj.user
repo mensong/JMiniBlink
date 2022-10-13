@@ -7,8 +7,7 @@
     <LocalDebuggerWorkingDirectory>$(SolutionDir)test</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LocalDebuggerCommandArguments>
-    </LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-preload MyPreload.js -plugin E:\Workspace\Git\JMiniBlink\Debug\Plugin.MFCTest.dll</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerWorkingDirectory>$(SolutionDir)test</LocalDebuggerWorkingDirectory>
   </PropertyGroup>

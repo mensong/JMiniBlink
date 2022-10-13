@@ -92,3 +92,60 @@ void WCharToMByte(LPCWSTR lpWideCharStr, DWORD cchWideChar, std::vector<char>* o
 	// Convert headers from ASCII to Unicode.
 	WideCharToMultiByte(codePage, 0, lpWideCharStr, cchWideChar, &out->at(0), dwMinSize, NULL, FALSE);
 }
+
+std::wstring AnsiToUnicode(const std::string& Ansi)
+{
+	std::wstring Result(L"");
+
+	if (Ansi.empty())
+	{
+		return Result;
+	}
+
+	int nChar = MultiByteToWideChar(CP_ACP, 0, Ansi.c_str(), -1, NULL, 0);
+
+	int nSize = nChar * sizeof(wchar_t) + 1;
+	wchar_t* pwchBuffer = new wchar_t[nSize];
+
+	nChar = MultiByteToWideChar(CP_ACP, 0, Ansi.c_str(), -1, pwchBuffer, nSize);
+	if (nChar == 0)
+	{
+		delete[] pwchBuffer;
+		return Result;
+	}
+	pwchBuffer[nChar] = 0;
+	Result = pwchBuffer;
+
+	delete[] pwchBuffer;
+
+	return Result;
+}
+
+std:: string UnicodeToAnsi(const std::wstring& Unicode)
+{
+	std::string Result("");
+
+	if (Unicode.empty())
+	{
+		return Result;
+	}
+
+	int nChar = WideCharToMultiByte(CP_ACP, 0, Unicode.c_str(), -1, 0, 0, 0, 0);
+	int nSize = nChar + 1;
+
+	char* pchBuffer = new char[nSize];
+
+	nChar = WideCharToMultiByte(CP_ACP, 0, Unicode.c_str(), -1, pchBuffer, nSize, 0, 0);
+	if (nChar == 0)
+	{
+		delete[] pchBuffer;
+		return Result;
+	}
+
+	pchBuffer[nChar] = 0;
+	Result = pchBuffer;
+
+	delete[] pchBuffer;
+
+	return Result;
+}

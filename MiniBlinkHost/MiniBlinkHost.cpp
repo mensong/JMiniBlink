@@ -13,7 +13,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
 	{
 		Application app;
-		RunApplication(&app);
+		app.RunApplication();
 	}
 
     return 0;

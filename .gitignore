@@ -13,3 +13,10 @@
 /x64/Release
 /.vs/JMiniBlink/v14/*.suo
 /test/cookies.dat
+/Plugin.MFCTest/Debug
+/Plugin.MFCTest/Release
+/Plugin.MFCTest/Plugin.MFCTest.aps
+/Plugin.System/Debug
+/Plugin.System/Release
+/*.opensdf
+/*.sdf

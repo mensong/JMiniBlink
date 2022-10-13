@@ -30,17 +30,36 @@ public:
 		wkeFinalize();
 	}
 
-    wkeWebView window;
 
-	std::wstring url;
+	void PrintHelp();	
+	// 创建主页面窗口
+	BOOL CreateWebWindow();
+	void PrintHelpAndQuit();
+	void RunMessageLoop();
+	void RunApplication();
+	void QuitApplication();
+
+public:
+    wkeWebView window;
+	
 	bool hide;
 	bool transparent;
 	int width;
 	int height;
-	std::wstring preloadFile;
-
-	std::string simName;
 	simdb* db;
+
+	const wchar_t* Url() { return url.c_str(); }
+	const wchar_t* PreloadFile() { return preloadFile.c_str(); }
+	const char* SimName() { return simName.c_str();  }
+
+private:
+	BOOL ProcessCommandLine();
+
+private:
+	std::wstring url;
+	std::wstring preloadFile;
+	std::string simName;
+	std::vector<std::string> plugins;
 };
 
 

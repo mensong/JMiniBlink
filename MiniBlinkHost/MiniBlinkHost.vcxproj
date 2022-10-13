@@ -215,6 +215,7 @@
     <ClInclude Include="BindFunctions.h" />
     <ClInclude Include="MiniBlinkHost.h" />
     <ClInclude Include="MiniBlinkHostApp.h" />
+    <ClInclude Include="PluginManager.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -225,6 +226,7 @@
     <ClCompile Include="BindFunctions.cpp" />
     <ClCompile Include="MiniBlinkHost.cpp" />
     <ClCompile Include="MiniBlinkHostApp.cpp" />
+    <ClCompile Include="PluginManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
