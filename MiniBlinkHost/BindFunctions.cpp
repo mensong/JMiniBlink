@@ -1290,7 +1290,7 @@ jsValue WKE_CALL_TYPE js_wkeIsWebRemoteFrame(jsExecState es, void* param)
 	if (nArgc == 1)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (jsIsNumber(jv0))
+		if (!jsIsNumber(jv0))
 			return jsThrowException(es, "Parameters error.");
 
 		return jsBoolean(wkeIsWebRemoteFrame(app->window, (wkeWebFrameHandle)jsToInt(es, jv0)));
@@ -1688,7 +1688,7 @@ void InitFunctions(Application* app)
 	*/
 	wkeJsBindFunction("wkeSetProxy", js_wkeSetProxy, app, 5);
 	/*
-	* wkeSetViewProxy(proxyType:int, hostName:string, port:int, username:string, password:string) : boolean;
+	* wkeSetViewProxy(proxyType:int, hostName:string, port:int, username:string, password:string) : undefined;
 	*   proxyType  - 参见wkeProxyType的定义
 	*/
 	wkeJsBindFunction("wkeSetViewProxy", js_wkeSetViewProxy, app, 5);
@@ -1714,7 +1714,7 @@ void InitFunctions(Application* app)
 	*/
 	wkeJsBindFunction("wkeSetUserAgent", js_wkeSetUserAgent, app, 1);
 	/*
-	* wkeGetUserAgent() : boolean;
+	* wkeGetUserAgent() : string;
 	*/
 	wkeJsBindFunction("wkeGetUserAgent", js_wkeGetUserAgent, app, 0);
 
@@ -1732,11 +1732,11 @@ void InitFunctions(Application* app)
 	*/
 	wkeJsBindFunction("wkePostUrl", js_wkePostUrl, app, -1);
 	/*
-	* wkeLoadHtml(url:string, [baseUrl:string]) : boolean;
+	* wkeLoadHtml(url:string, [baseUrl:string]) : undefined;
 	*/
 	wkeJsBindFunction("wkeLoadHtml", js_wkeLoadHtml, app, -1);
 	/*
-	* wkeLoadFile(filePath:string) : boolean;
+	* wkeLoadFile(filePath:string) : undefined;
 	*/
 	wkeJsBindFunction("wkeLoadFile", js_wkeLoadFile, app, 1);
 	/*
@@ -1832,7 +1832,7 @@ void InitFunctions(Application* app)
 	*/
 	wkeJsBindFunction("wkeSetCookieJarFilePath", js_wkeSetCookieJarFilePath, app, 1);
 	/*
-	* wkeGetCookie() : boolean;
+	* wkeGetCookie() : string;
 	*/
 	wkeJsBindFunction("wkeGetCookie", js_wkeGetCookie, app, 0);
 	/*
@@ -1901,7 +1901,7 @@ void InitFunctions(Application* app)
 	wkeJsBindFunction("wkeKillFocus", js_wkeKillFocus, app, 0);
 	
 	/*
-	* wkeSetZoomFactor(factor:float) : boolean;
+	* wkeSetZoomFactor(factor:float) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetZoomFactor", js_wkeSetZoomFactor, app, 1);
 	/*
@@ -1910,7 +1910,7 @@ void InitFunctions(Application* app)
 	wkeJsBindFunction("wkeGetZoomFactor", js_wkeGetZoomFactor, app, 0);
 	
 	/*
-	* wkeSetDragFiles(clientPoint_x:int, clientPoint_y:int, filePath:string|filePaths:Array_string) : boolean;
+	* wkeSetDragFiles(clientPoint_x:int, clientPoint_y:int, filePath:string|filePaths:Array_string) : undefined;
 	*/
 	wkeJsBindFunction("wkeSetDragFiles", js_wkeSetDragFiles, app, 3);
 	
@@ -1928,7 +1928,7 @@ void InitFunctions(Application* app)
 	wkeJsBindFunction("wkeWebFrameGetMainFrame", js_wkeWebFrameGetMainFrame, app, 0);
 
 	/*
-	* wkeRunJsInAllFrames(js:string, [isInClosure:boolean]) : boolean;
+	* wkeRunJsInAllFrames(js:string, [isInClosure:boolean]) : undefined;
 	*/
 	wkeJsBindFunction("wkeRunJsInAllFrames", js_wkeRunJsInAllFrames, app, -1);
 	/*
