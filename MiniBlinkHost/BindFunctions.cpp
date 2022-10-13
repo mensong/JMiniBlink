@@ -1540,35 +1540,35 @@ jsValue WKE_CALL_TYPE js_wkeCreateResizeBorders(jsExecState es, void* param)
 	if (nArgc == 8)
 	{
 		jsValue jv0 = jsArg(es, 0);
-		if (!jsIsNumber(jv0))
+		if (!jsIsBoolean(jv0))
 			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv1 = jsArg(es, 1);
-		if (!jsIsNumber(jv1))
+		if (!jsIsBoolean(jv1))
 			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv2 = jsArg(es, 2);
-		if (!jsIsNumber(jv2))
+		if (!jsIsBoolean(jv2))
 			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv3 = jsArg(es, 3);
-		if (!jsIsNumber(jv3))
+		if (!jsIsBoolean(jv3))
 			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv4 = jsArg(es, 4);
-		if (!jsIsNumber(jv4))
+		if (!jsIsBoolean(jv4))
 			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv5 = jsArg(es, 5);
-		if (!jsIsNumber(jv5))
+		if (!jsIsBoolean(jv5))
 			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv6 = jsArg(es, 6);
-		if (!jsIsNumber(jv6))
+		if (!jsIsBoolean(jv6))
 			return jsThrowException(es, "Parameters error.");
 
 		jsValue jv7 = jsArg(es, 7);
-		if (!jsIsNumber(jv7))
+		if (!jsIsBoolean(jv7))
 			return jsThrowException(es, "Parameters error.");
 
 		wkeCreateResizeBorders(app->window, 
