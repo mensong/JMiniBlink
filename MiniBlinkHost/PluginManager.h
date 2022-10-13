@@ -1,3 +1,4 @@
 #pragma once
 
-bool InitPlugins(class Application* app, const std::vector<std::string>& pluginsFilePath);
+void InitPlugin(class Application* app);
+bool AddPlugins(class Application* app, const std::vector<std::string>& pluginsFilePath);

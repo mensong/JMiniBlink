@@ -1,7 +1,7 @@
 
 wkeShowDevtools('WebInspector/inspector.html');
 
-
+LoadPlugins("Plugin.MFCTest.dll");
 
 wkeOnLoadUrlBegin(function(url, job){	
 	

@@ -4,6 +4,12 @@
 
 //插件方法原型 
 typedef jsValue (*PFN_PluginFunction)(jsExecState* es, Application* app);
+//插件入口点
+typedef int(*PFN_plugin_entry)(class Application* app);
+//插件名称
+typedef const char* (*PFN_plugin_name)();
+//插件方法列表
+typedef int(*PFN_plugin_functions)(const char** functionsName);
 
 //<插件名, <方法名, 方法句柄>>
 std::map<std::string, std::map<std::string, PFN_PluginFunction>> g_pluginFunctions;
@@ -44,12 +50,43 @@ jsValue WKE_CALL_TYPE js_CallExtend(jsExecState es, void* param)
 	return func(&es, app);	
 }
 
-//插件入口点
-typedef int(*PFN_plugin_entry)(class Application* app);
-typedef const char* (*PFN_plugin_name)();
-typedef int (*PFN_plugin_functions)(const char** functionsName);
 
-bool InitPlugins(class Application* app, const std::vector<std::string>& pluginsFilePath)
+jsValue WKE_CALL_TYPE js_LoadPlugins(jsExecState es, void* param)
+{
+	Application* app = (Application*)param;
+
+	int nArgc = jsArgCount(es);
+
+	std::vector<std::string> plugins;
+	for (int i = 0; i < nArgc; ++i)
+	{
+		jsValue jv = jsArg(es, i);
+		if (!jsIsString(jv))
+			continue;
+		const utf8* path = jsToString(es, jv);
+		std::vector<wchar_t> wv;
+		MByteToWChar(path, strlen(path), &wv, CP_UTF8);
+		wv.push_back('\0');
+		plugins.push_back(UnicodeToAnsi(wv.data()));
+	}
+
+	return jsBoolean(AddPlugins(app, plugins));
+}
+
+void InitPlugin(class Application* app)
+{
+	/*
+	* CallExtend(pluginName:string, functionName:string, 参数1, 参数2, ...) : js result;
+	*/
+	wkeJsBindFunction("CallExtend", js_CallExtend, app, 0);
+
+	/*
+	* LoadPlugins(pluginPath1:string, pluginPath2:string, ...) : boolean;
+	*/
+	wkeJsBindFunction("LoadPlugins", js_LoadPlugins, app, 0);
+}
+
+bool AddPlugins(class Application* app, const std::vector<std::string>& pluginsFilePath)
 {
 	for (int i = 0; i < pluginsFilePath.size(); ++i)
 	{
@@ -104,11 +141,6 @@ bool InitPlugins(class Application* app, const std::vector<std::string>& plugins
 		}
 
 	}
-
-	/*
-	* wkeSetDragDropEnable(enable:boolean) : boolean;
-	*/
-	wkeJsBindFunction("CallExtend", js_CallExtend, app, 0);
 
 	return true;
 }
