@@ -19,6 +19,7 @@ wkeOnLoadUrlBegin(function(url, job){
 wkeOnDocumentReady(function(frameId){
 	var url = wkeGetFrameUrl(frameId);
 	console.log(url);
+	wkeSetWindowTitle(wkeGetTitle());
 	/*
 	if (url == "http://plm.uat.meicloud.com/index"){
 		alert(wkeGetCookie());
