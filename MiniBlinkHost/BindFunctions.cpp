@@ -1420,6 +1420,12 @@ jsValue WKE_CALL_TYPE js_wkeCreateWebWindow(jsExecState es, void* param)
 		sCmd += " -simName ";
 		sCmd += app->SimName();
 
+		//j = jsGet(es, jv0, "plugin");
+		//if (jsIsArray(j))
+		//{
+		//	jsGetArrayBuffer
+		//}
+
 		WinExec(sCmd.c_str(), SW_SHOW);
 
 		return jsUndefined();

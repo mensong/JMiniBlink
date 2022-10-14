@@ -16,8 +16,24 @@ PLUGIN_API const char* plugin_name()
 
 PLUGIN_API int plugin_functions(const char** functionsName)
 {
-	*functionsName = "foo1\0foo2\0";
+	*functionsName = 
+		"foo1\0"
+		"foo2\0"
+		;
 	return 2;
+}
+
+PLUGIN_API jsValue readText(jsExecState* es, Application* app)
+{
+	if (Argc(es) == 0)
+		return jsUndefined();
+
+	auto jv = Argv(es, 0);
+	if (!jsIsString(jv))
+		return jsUndefined();
+
+	const utf8* p = jsToString(*es, jv);
+
 }
 
 PLUGIN_API jsValue foo1(jsExecState* es, Application* app)
