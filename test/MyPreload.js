@@ -1,7 +1,11 @@
 
-//wkeShowDevtools('WebInspector/inspector.html');
+wkeShowDevtools('WebInspector/inspector.html');
 
 LoadPlugins("Plugin.MFCTest.dll");
+LoadPlugins("Plugin.System.dll");
+
+console.log(CallExtend("System", "writeText", "1.txt", "我爱你mensong"));
+console.log(CallExtend("System", "readText", "1.txt"));
 
 wkeOnLoadUrlBegin(function(url, job){	
 	

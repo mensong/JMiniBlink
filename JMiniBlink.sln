@@ -5,9 +5,11 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MiniBlinkHost", "MiniBlinkHost\MiniBlinkHost.vcxproj", "{533E0113-7146-45F6-8983-2768A48CDC49}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin.System", "Plugin.System\Plugin.System.vcxproj", "{14F608B7-D72E-4152-8264-7E6E808365CD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{5771DCA0-6CDF-49BC-8480-0047EA989618}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin.MFCTest", "Plugin.MFCTest\Plugin.MFCTest.vcxproj", "{6FC75BB1-1A75-458F-AE8A-09688F9D3CD4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin.System", "Plugins\Plugin.System\Plugin.System.vcxproj", "{14F608B7-D72E-4152-8264-7E6E808365CD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin.MFCTest", "Plugins\Plugin.MFCTest\Plugin.MFCTest.vcxproj", "{6FC75BB1-1A75-458F-AE8A-09688F9D3CD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,5 +46,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{14F608B7-D72E-4152-8264-7E6E808365CD} = {5771DCA0-6CDF-49BC-8480-0047EA989618}
+		{6FC75BB1-1A75-458F-AE8A-09688F9D3CD4} = {5771DCA0-6CDF-49BC-8480-0047EA989618}
 	EndGlobalSection
 EndGlobal

@@ -20,3 +20,8 @@
 /Plugin.System/Release
 /*.opensdf
 /*.sdf
+/Plugins/Plugin.MFCTest/Debug
+/Plugins/Plugin.MFCTest/Release
+/Plugins/Plugin.MFCTest/*.aps
+/Plugins/Plugin.System/Release
+/Plugins/Plugin.System/Debug
