@@ -24,12 +24,6 @@ wkeOnDocumentReady(function(frameId){
 	var url = wkeGetFrameUrl(frameId);
 	console.log(url);
 	wkeSetWindowTitle(wkeGetTitle());
-	/*
-	if (url == "http://plm.uat.meicloud.com/index"){
-		alert(wkeGetCookie());
-		alert(localStorage.getItem("userConfig"));
-	}
-	*/
 	
 	if (url == "https://www.baidu.com/"){
 		var keyword = CallExtend("MFCTest", "foo1", 1,2,3,4);
