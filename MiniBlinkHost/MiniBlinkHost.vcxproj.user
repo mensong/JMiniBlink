@@ -6,7 +6,7 @@
     <LocalDebuggerWorkingDirectory>$(SolutionDir)test</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LocalDebuggerCommandArguments> -preload MyPreload.js</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-preload MyPreload.js</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerWorkingDirectory>$(SolutionDir)test</LocalDebuggerWorkingDirectory>
   </PropertyGroup>

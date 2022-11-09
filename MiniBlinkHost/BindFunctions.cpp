@@ -3,6 +3,7 @@
 #include "MiniBlinkHostApp.h"
 #include <map>
 #include <algorithm>
+#include <simdb.hpp>
 
 jsValue getJsValueByString(Application* app, jsExecState es, const std::string& jsValueString)
 {

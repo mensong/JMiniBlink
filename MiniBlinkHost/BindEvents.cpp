@@ -5,33 +5,28 @@
 
 bool g_defaultHtml = true;
 
-// 回调：文档加载成功
-jsValue WKE_CALL_TYPE js_wkeOnDocumentReady(jsExecState es, void* param)
-{
-	int nArgc = jsArgCount(es);
-	if (nArgc < 1)
-		return jsBoolean(false);
-
-	jsValue jFunc = jsArg(es, 0);
-	if (!jsIsFunction(jFunc))
-		return jsBoolean(false);
-
-	jsSetGlobal(es, "_wkeOnDocumentReady", jFunc);
-
-	return jsBoolean(true);
-}
 
 void HandleDocumentReady2(wkeWebView webView, void* param, wkeWebFrameHandle frameId)
 {
+	if (!webView)
+		return;
+
 	Application* app = (Application*)param;
 
 #ifdef _DEBUG
 	const utf8* url = wkeGetFrameUrl(webView, frameId);
 #endif
 
+	//执行prerun code
+	if (wcslen(app->PrerunCode()) != 0)
+		wkeRunJSW(webView, app->PrerunCode(), false);
+
 	// 加载preload 
-	std::string sJS = ReadText(app->PreloadFile());
-	wkeRunJS(webView, sJS.c_str(), false);
+	if (wcslen(app->PreloadFile()) != 0)
+	{
+		std::string sJS = ReadText(app->PreloadFile());
+		wkeRunJS(webView, sJS.c_str(), false);
+	}
 
 	//执行js定义的事件
 	jsExecState es = wkeGlobalExec(webView);
@@ -54,6 +49,22 @@ void HandleDocumentReady2(wkeWebView webView, void* param, wkeWebFrameHandle fra
 	}
 }
 
+// 回调：文档加载成功
+jsValue WKE_CALL_TYPE js_wkeOnDocumentReady(jsExecState es, void* param)
+{
+	int nArgc = jsArgCount(es);
+	if (nArgc < 1)
+		return jsBoolean(false);
+
+	jsValue jFunc = jsArg(es, 0);
+	if (!jsIsFunction(jFunc))
+		return jsBoolean(false);
+
+	jsSetGlobal(es, "_wkeOnDocumentReady", jFunc);
+
+	return jsBoolean(true);
+}
+
 // 回调：创建新的页面，比如说调用了 window.open 或者点击了 <a target="_blank" .../>
 jsValue WKE_CALL_TYPE js_wkeOnCreateView(jsExecState es, void* param)
 {
@@ -72,32 +83,35 @@ jsValue WKE_CALL_TYPE js_wkeOnCreateView(jsExecState es, void* param)
 wkeWebView HandleCreateView(wkeWebView webView, void* param, wkeNavigationType navType, const wkeString url, const wkeWindowFeatures* features)
 {
 	Application* app = (Application*)param;
-
-	jsExecState es = wkeGlobalExec(webView);
-	jsValue jFunc = jsGetGlobal(es, "_wkeOnCreateView");
-	if (jsIsFunction(jFunc))
+	
+	if (webView)
 	{
-		jsValue* argvs = new jsValue[3];
-		argvs[0] = jsInt((int)navType);
-		argvs[1] = jsString(es, wkeGetString(url));
-		jsValue jFeat = jsEmptyObject(es);
-		jsSet(es, jFeat, "x", jsInt(features->x));
-		jsSet(es, jFeat, "y", jsInt(features->y));
-		jsSet(es, jFeat, "width", jsInt(features->width));
-		jsSet(es, jFeat, "height", jsInt(features->height));
-		jsSet(es, jFeat, "menuBarVisible", jsBoolean(features->menuBarVisible));
-		jsSet(es, jFeat, "statusBarVisible", jsBoolean(features->statusBarVisible));
-		jsSet(es, jFeat, "toolBarVisible", jsBoolean(features->toolBarVisible));
-		jsSet(es, jFeat, "locationBarVisible", jsBoolean(features->locationBarVisible));
-		jsSet(es, jFeat, "scrollbarsVisible", jsBoolean(features->scrollbarsVisible));
-		jsSet(es, jFeat, "resizable", jsBoolean(features->resizable));
-		jsSet(es, jFeat, "fullscreen", jsBoolean(features->fullscreen));
-		argvs[2] = jFeat;
-		jsValue jRet = jsCallGlobal(es, jFunc, argvs, 3);
-		delete[] argvs;
-		if (jsIsNumber(jRet))
-			return (wkeWebView)(UINT64)jsToDouble(es, jRet);
-		return nullptr;
+		jsExecState es = wkeGlobalExec(webView);
+		jsValue jFunc = jsGetGlobal(es, "_wkeOnCreateView");
+		if (jsIsFunction(jFunc))
+		{
+			jsValue* argvs = new jsValue[3];
+			argvs[0] = jsInt((int)navType);
+			argvs[1] = jsString(es, wkeGetString(url));
+			jsValue jFeat = jsEmptyObject(es);
+			jsSet(es, jFeat, "x", jsInt(features->x));
+			jsSet(es, jFeat, "y", jsInt(features->y));
+			jsSet(es, jFeat, "width", jsInt(features->width));
+			jsSet(es, jFeat, "height", jsInt(features->height));
+			jsSet(es, jFeat, "menuBarVisible", jsBoolean(features->menuBarVisible));
+			jsSet(es, jFeat, "statusBarVisible", jsBoolean(features->statusBarVisible));
+			jsSet(es, jFeat, "toolBarVisible", jsBoolean(features->toolBarVisible));
+			jsSet(es, jFeat, "locationBarVisible", jsBoolean(features->locationBarVisible));
+			jsSet(es, jFeat, "scrollbarsVisible", jsBoolean(features->scrollbarsVisible));
+			jsSet(es, jFeat, "resizable", jsBoolean(features->resizable));
+			jsSet(es, jFeat, "fullscreen", jsBoolean(features->fullscreen));
+			argvs[2] = jFeat;
+			jsValue jRet = jsCallGlobal(es, jFunc, argvs, 3);
+			delete[] argvs;
+			if (jsIsNumber(jRet))
+				return (wkeWebView)(UINT64)jsToDouble(es, jRet);
+			return nullptr;
+		}
 	}
 
 	//wkeWebView newWindow = wkeCreateWebWindow(WKE_WINDOW_TYPE_POPUP, wkeGetWindowHandle(webView), features->x, features->y, features->width, features->height);
@@ -116,6 +130,16 @@ wkeWebView HandleCreateView(wkeWebView webView, void* param, wkeNavigationType n
 	sCmd += std::to_string(features->height);
 	sCmd += " -tran ";
 	sCmd += app->transparent ? "1" : "0";
+
+	if (wcslen(app->PrerunCode()) != 0)
+	{
+		sCmd += " -script ";
+		std::vector<char> vctSZ;
+		WCharToMByte(app->PrerunCode(), wcslen(app->PrerunCode()), &vctSZ, CP_ACP);
+		vctSZ.push_back('\0');
+		sCmd += vctSZ.data();
+	}
+
 	if (wcslen(app->PreloadFile()) != 0)
 	{
 		sCmd += " -preload ";
@@ -124,6 +148,7 @@ wkeWebView HandleCreateView(wkeWebView webView, void* param, wkeNavigationType n
 		vctSZ.push_back('\0');
 		sCmd += vctSZ.data();
 	}
+
 	sCmd += " -simName ";
 	sCmd += app->SimName();
 
@@ -148,6 +173,9 @@ jsValue WKE_CALL_TYPE js_wkeOnMouseOverUrlChanged(jsExecState es, void* param)
 }
 void HandleMouseOverUrlChanged(wkeWebView webView, void* param, const wkeString url)
 {
+	if (!webView)
+		return;
+
 	jsExecState es = wkeGlobalExec(webView);	
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnMouseOverUrlChanged");
 	if (jsIsFunction(jFunc))
@@ -177,6 +205,9 @@ jsValue WKE_CALL_TYPE js_wkeOnTitleChanged(jsExecState es, void* param)
 }
 void HandleTitleChanged(wkeWebView webView, void* param, const wkeString title)
 {
+	if (!webView)
+		return;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnTitleChanged");
@@ -207,6 +238,9 @@ jsValue WKE_CALL_TYPE js_wkeOnUrlChanged2(jsExecState es, void* param)
 }
 void HandleUrlChanged2(wkeWebView webView, void* param, wkeWebFrameHandle frameId, const wkeString url)
 {
+	if (!webView)
+		return;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnUrlChanged2");
@@ -238,6 +272,9 @@ jsValue WKE_CALL_TYPE js_wkeOnAlertBox(jsExecState es, void* param)
 }
 void HandleAlertBox(wkeWebView webView, void* param, const wkeString msg)
 {
+	if (!webView)
+		return;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnAlertBox");
@@ -275,6 +312,9 @@ jsValue WKE_CALL_TYPE js_wkeOnConfirmBox(jsExecState es, void* param)
 }
 bool HandleConfirmBox(wkeWebView webView, void* param, const wkeString msg)
 {
+	if (!webView)
+		return false;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnConfirmBox");
@@ -316,6 +356,9 @@ jsValue WKE_CALL_TYPE js_wkeOnPromptBox(jsExecState es, void* param)
 }
 bool HandlePromptBox(wkeWebView webView, void* param, const wkeString msg, const wkeString defaultResult, wkeString result)
 {
+	if (!webView)
+		return false;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnPromptBox");
@@ -370,6 +413,9 @@ jsValue WKE_CALL_TYPE js_wkeOnNavigation(jsExecState es, void* param)
 }
 bool HandleNavigation(wkeWebView webView, void* param, wkeNavigationType navigationType, const wkeString url)
 {
+	if (!webView)
+		return false;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnNavigation");
@@ -407,6 +453,9 @@ jsValue WKE_CALL_TYPE js_wkeOnLoadingFinish(jsExecState es, void* param)
 }
 void HandleLoadingFinish(wkeWebView webView, void* param, const wkeString url, wkeLoadingResult result, const wkeString failedReason)
 {
+	if (!webView)
+		return;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnLoadingFinish");
@@ -439,6 +488,9 @@ jsValue WKE_CALL_TYPE js_wkeOnDownload(jsExecState es, void* param)
 }
 bool HandleDownload(wkeWebView webView, void* param, const char* url)
 {
+	if (!webView)
+		return false;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnDownload");
@@ -476,6 +528,9 @@ jsValue WKE_CALL_TYPE js_wkeOnConsole(jsExecState es, void* param)
 void HandleConsole(wkeWebView webView, void* param, wkeConsoleLevel level, const wkeString message, 
 	const wkeString sourceName, unsigned sourceLine, const wkeString stackTrace)
 {
+	if (!webView)
+		return;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnConsole");
@@ -510,6 +565,9 @@ jsValue WKE_CALL_TYPE js_wkeOnLoadUrlBegin(jsExecState es, void* param)
 }
 bool HandleLoadUrlBegin(wkeWebView webView, void* param, const char *url, void *job)
 {
+	if (!webView)
+		return false;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	bool bCancel = false;
@@ -547,6 +605,9 @@ jsValue WKE_CALL_TYPE js_wkeOnNetHookRequest(jsExecState es, void* param)
 }
 void HandleNetHookRequest(wkeWebView webView, void* param, const char* url, wkeNetJob job, void* buf, int len)
 {
+	if (!webView)
+		return;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnNetHookRequest");
@@ -555,10 +616,13 @@ void HandleNetHookRequest(wkeWebView webView, void* param, const char* url, wkeN
 		jsValue* argvs = new jsValue[4];
 		argvs[0] = jsString(es, url);
 		argvs[1] = jsDouble((double)(UINT64)job);
-		argvs[2] = jsString(es, (const utf8*)buf);
+		argvs[2] = jsString(es, static_cast<const utf8*>(buf));
 		argvs[3] = jsInt(len);
 
 		jsValue jRet = jsCallGlobal(es, jFunc, argvs, 4);
+		memset(buf, 0, len);
+		const utf8* newHtml = jsToString(es, jRet);
+		memcpy_s(buf, len, newHtml, strlen(newHtml));
 
 		delete[] argvs;
 	}
@@ -580,6 +644,9 @@ jsValue WKE_CALL_TYPE js_wkeOnDidCreateScriptContext(jsExecState es, void* param
 }
 void HandleDidCreateScriptContext(wkeWebView webView, void* param, wkeWebFrameHandle frameId, void* context, int extensionGroup, int worldId)
 {
+	if (!webView)
+		return;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnDidCreateScriptContext");
@@ -613,6 +680,9 @@ jsValue WKE_CALL_TYPE js_wkeOnWillReleaseScriptContext(jsExecState es, void* par
 }
 void HandleWillReleaseScriptContext(wkeWebView webView, void* param, wkeWebFrameHandle frameId, void* context, int worldId)
 {
+	if (!webView)
+		return;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnWillReleaseScriptContext");
@@ -646,6 +716,9 @@ jsValue WKE_CALL_TYPE js_wkeOnWindowClosing(jsExecState es, void* param)
 }
 bool HandleWindowClosing(wkeWebView webView, void* param)
 {
+	if (!webView)
+		return true;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnWindowClosing");
@@ -676,6 +749,9 @@ jsValue WKE_CALL_TYPE js_wkeOnWindowDestroy(jsExecState es, void* param)
 }
 void HandleWindowDestroy(wkeWebView webView, void* param)
 {
+	if (!webView)
+		return;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnWindowDestroy");
@@ -705,6 +781,9 @@ jsValue WKE_CALL_TYPE js_wkeOnWillMediaLoad(jsExecState es, void* param)
 }
 void HandleWillMediaLoad(wkeWebView webView, void* param, const char* url, wkeMediaLoadInfo* info)
 {
+	if (!webView)
+		return;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnWillMediaLoad");
@@ -739,6 +818,9 @@ jsValue WKE_CALL_TYPE js_wkeOnResponse(jsExecState es, void* param)
 }
 bool HandleResponse(wkeWebView webView, void* param, const char* url, wkeNetJob job)
 {
+	if (!webView)
+		return false;
+
 	jsExecState es = wkeGlobalExec(webView);
 
 	jsValue jFunc = jsGetGlobal(es, "_wkeOnResponse");
@@ -772,7 +854,8 @@ jsValue WKE_CALL_TYPE js_wkeNetHookRequest(jsExecState es, void* param)
 	if (!jsIsNumber(jv))
 		return jsBoolean(false);
 
-	wkeNetHookRequest((wkeNetJob)(UINT64)jsToDouble(es, jv));
+	wkeNetJob jobId = (wkeNetJob)(UINT64)jsToDouble(es, jv);
+	wkeNetHookRequest(jobId);
 
 	return jsBoolean(true);
 }
@@ -1221,13 +1304,13 @@ void InitEvents(Application* app)
 	wkeOnResponse(app->window, HandleResponse, app);
 
 	/*
-	* wkeOnLoadUrlBegin(function(url:string, job:int){...});
+	* wkeOnLoadUrlBegin(cancelLoad:bool function(url:string, job:int){...});
 	*/
 	wkeJsBindFunction("wkeOnLoadUrlBegin", js_wkeOnLoadUrlBegin, app, 1);
 	wkeOnLoadUrlBegin(app->window, HandleLoadUrlBegin, app);
 
 	/*
-	* wkeOnNetHookRequest(function(url:string, job:int, data:string, dataLen:int){...});
+	* wkeOnNetHookRequest(newBuf:string function(url:string, job:int, data:string, dataLen:int){...});
 	*/
 	wkeJsBindFunction("wkeOnNetHookRequest", js_wkeOnNetHookRequest, app, 1);
 	wkeOnNetHookRequest(app->window, HandleNetHookRequest, app);
@@ -1298,5 +1381,5 @@ void InitEvents(Application* app)
 	 *   在加载主页前加载一个空白的页面，此时的空白页面为主页加载preload
 	 */
 	g_defaultHtml = true;
-	wkeLoadHtml(app->window, "<html><html>");
+	wkeLoadHtml(app->window, "<html></html>");
 }

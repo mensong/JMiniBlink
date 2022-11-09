@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ArgumentMan.h>
+#include <atltime.h>
+#include <string>
+#include <simdb.hpp>
 
 #include <shellapi.h>
 #pragma comment(lib, "shell32.lib")
@@ -15,6 +18,27 @@
 #include "PluginManager.h"
 
 
+Application::Application()
+{
+	wkeInitialize();
+
+	window = NULL;
+
+	hide = false;
+	transparent = false;
+	width = 1024;
+	height = 768;
+
+	db = NULL;
+}
+
+Application::~Application()
+{
+	if (db)
+		delete db;
+	wkeFinalize();
+}
+
 void Application::PrintHelp()
 {
 	const wchar_t* msg =
@@ -23,9 +47,10 @@ void Application::PrintHelp()
 	L"  -hide <0|1> : 是否隐藏窗口，默认不隐藏窗口\r\n"
 	L"  -tran <0|1> : 是否为透明窗口，默认不透明\r\n"
 	L"  -width <num> : 窗口初始宽度\r\n"
-	L"  -height <num> : 窗口初始高度\n"
-	L"  -preload <preload.js> : 预加载js文件（默认为同程序目录下的preload.js）\n"
-	L"  -plugin <pluginFile> : 加载插件\n";
+	L"  -height <num> : 窗口初始高度\r\n"
+	L"  -script \"prerun code\" : 初始化代码，可以作为preload的传参\r\n"
+	L"  -preload <preload.js> : 预加载js文件（默认为同程序目录下的preload.js）\r\n"
+	L"  -plugin <pluginFile> : 加载插件\r\n";
 	MessageBoxW(NULL, msg, L"help", MB_OK);
 }
 
@@ -79,6 +104,10 @@ BOOL Application::ProcessCommandLine()
 		if (h > 0)
 			app->height = h;
 	}
+
+	//prerun code
+	if (!am.Has(app->prerunCode, L"script"))
+		app->prerunCode = L"";
 
 	//preload js file path
 	if (!am.Has(app->preloadFile, L"preload"))

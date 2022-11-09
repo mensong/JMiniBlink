@@ -2,33 +2,13 @@
 #define WKEXE_APP_H
 
 #include <wke.h>
-#include <atltime.h>
-#include <string>
-#include <simdb.hpp>
 
 class Application
 {
 public:
-	Application()
-	{
-		wkeInitialize();
+	Application();
 
-		window = NULL;
-
-		hide = false;
-		transparent = false;
-		width = 1024;
-		height = 768;
-
-		db = NULL;
-	}
-
-	~Application()
-	{
-		if (db)
-			delete db;
-		wkeFinalize();
-	}
+	~Application();
 
 
 	void PrintHelp();	
@@ -46,9 +26,10 @@ public:
 	bool transparent;
 	int width;
 	int height;
-	simdb* db;
+	class simdb* db;
 
 	const wchar_t* Url() { return url.c_str(); }
+	const wchar_t* PrerunCode() { return prerunCode.c_str(); }
 	const wchar_t* PreloadFile() { return preloadFile.c_str(); }
 	const char* SimName() { return simName.c_str();  }
 
@@ -58,6 +39,7 @@ private:
 private:
 	std::wstring url;
 	std::wstring preloadFile;
+	std::wstring prerunCode;
 	std::string simName;
 	std::vector<std::string> plugins;
 };

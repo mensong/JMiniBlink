@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 #include "Plugin.h"
+#include <shellapi.h>
+#include "MiniBlinkHost\MiniBlinkHostApp.h"
 
 PLUGIN_API ERR_CODE plugin_entry(class Application* app)
 {
@@ -19,8 +21,10 @@ PLUGIN_API int plugin_functions(const char** functionsName)
 	*functionsName = 
 		"readText\0"
 		"writeText\0"
+		"killMe\0"
+		"setIcon\0"
 		;
-	return 2;
+	return 4;
 }
 
 PLUGIN_API jsValue readText(jsExecState* es, Application* app)
@@ -70,6 +74,45 @@ PLUGIN_API jsValue writeText(jsExecState* es, Application* app)
 	
 	auto wlen = FileHelper::WriteFile(path.c_str(), text.c_str(), text.size(), NULL, start, false, true);
 	return jsInt(wlen);
+}
+
+PLUGIN_API jsValue killMe(jsExecState* es, Application* app)
+{
+	HANDLE hself = GetCurrentProcess();
+	TerminateProcess(hself, 0);
+	return jsUndefined();
+}
+
+PLUGIN_API jsValue setIcon(jsExecState* es, Application* app)
+{
+	int nArg = Argc(es);
+	if (nArg < 1)
+		return jsThrowException(*es, "Parameters error.");
+
+	jsValue jv = Argv(es, 0);
+	std::string iconPath = jsToString(*es, jv);
+
+	HICON hicon = (HICON)LoadImageA(
+		NULL, //handle of the instance that contains //the image
+		iconPath.c_str(),//name or identifier of image
+		IMAGE_ICON,//type of image-can also be IMAGE_CURSOR or MAGE_ICON
+		0, 0,//desired width and height
+		LR_LOADFROMFILE);//load flags
+	if (hicon == NULL)
+		return jsBoolean(false);
+	
+	if (nArg == 1)
+	{
+		SendMessage(wkeGetWindowHandle(app->window), WM_SETICON, TRUE, (LPARAM)hicon);
+		SendMessage(wkeGetWindowHandle(app->window), WM_SETICON, FALSE, (LPARAM)hicon);
+	}
+	else
+	{
+		jv = Argv(es, 1);
+		bool bIsLarge = jsToBoolean(*es, jv);
+		SendMessage(wkeGetWindowHandle(app->window), WM_SETICON, (bIsLarge?TRUE:FALSE), (LPARAM)hicon);
+	}
+	return jsBoolean(true);
 }
 
 PLUGIN_API jsValue foo1(jsExecState* es, Application* app)

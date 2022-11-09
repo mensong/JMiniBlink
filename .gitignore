@@ -25,3 +25,5 @@
 /Plugins/Plugin.MFCTest/*.aps
 /Plugins/Plugin.System/Release
 /Plugins/Plugin.System/Debug
+/test/Meicloud.js
+/test/testMeicloud.bat
