@@ -9,7 +9,7 @@ typedef int(*PFN_plugin_entry)(class Application* app);
 //插件名称
 typedef const char* (*PFN_plugin_name)();
 //插件方法列表
-typedef int(*PFN_plugin_functions)(const char** functionsName);
+typedef const char* (*PFN_plugin_functions)();
 
 //<插件名, <方法名, 方法句柄>>
 std::map<std::string, std::map<std::string, PFN_PluginFunction>> g_pluginFunctions;
@@ -113,12 +113,11 @@ bool AddPlugins(class Application* app, const std::vector<std::string>& pluginsF
 		PFN_plugin_functions plugin_functions = (PFN_plugin_functions)GetProcAddress(h, "plugin_functions");
 		if (plugin_functions == NULL)
 			return false;
-		const char* functionsName = NULL;
-		int nFunctions = plugin_functions(&functionsName);
-		if (nFunctions > 0 && functionsName == NULL)
+		const char* functionsNames = plugin_functions();
+		if (functionsNames == NULL)
 			return false;
-		const char* p = functionsName;
-		for (int i = 0; i < nFunctions; ++i)
+		const char* p = functionsNames;
+		while(1)
 		{
 			if (p == NULL)
 				return false;

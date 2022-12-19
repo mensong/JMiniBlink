@@ -73,13 +73,12 @@ PLUGIN_API const char* plugin_name()
 {
 	return "MFCTest";
 }
-PLUGIN_API int plugin_functions(const char** functionsName)
+PLUGIN_API const char* plugin_functions()
 {
-	*functionsName =
+	return
 		"foo1\0"
 		"foo2\0"
-		;
-	return 2;
+		"\0";
 }
 
 PLUGIN_API jsValue foo1(jsExecState* es, Application* app)

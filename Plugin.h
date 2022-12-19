@@ -5,9 +5,12 @@
 #define ERR_CODE int
 
 //必须实现的函数
+// 插件入口
 PLUGIN_API ERR_CODE plugin_entry(class Application* app);
+// 插件名称
 PLUGIN_API const char* plugin_name();
-PLUGIN_API int plugin_functions(const char** functionsName);
+// 插件函数
+PLUGIN_API const char* plugin_functions();
 
 //获得实际参数数量
 //CallExtend("插件名", "函数名", 参数1, 参数2, 参数3, ...);

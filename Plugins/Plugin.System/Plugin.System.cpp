@@ -16,15 +16,15 @@ PLUGIN_API const char* plugin_name()
 	return "System";
 }
 
-PLUGIN_API int plugin_functions(const char** functionsName)
+PLUGIN_API const char* plugin_functions()
 {
-	*functionsName = 
+	return
 		"readText\0"
 		"writeText\0"
 		"killMe\0"
 		"setIcon\0"
+		"\0"
 		;
-	return 4;
 }
 
 PLUGIN_API jsValue readText(jsExecState* es, Application* app)
